@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session')
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -7,12 +8,15 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var FacebookStrategy = require('passport-facebook');
-var SpotifyStrategy = require('passport-spotify')
+var SpotifyStrategy = require('passport-spotify');
 var MongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
 
+var variables = require('./variables');
+
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var auth = require('./routes/auth');
+var User = require('./models/user')
 
 var app = express();
 
@@ -29,12 +33,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //What Ruth put in
-var connect = process.env.MONGODB_URI || require('./models/connect').mongodb;
+var connect = variables.MONGODB_URI
 mongoose.connect(connect);
 
 //Copied passport stuff
 app.use(session({
-    secret: process.env.SECRET,
+    secret: variables.SECRET,
     // name: 'Catscoookie',
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     proxy: true,
@@ -82,8 +86,8 @@ passport.use(new LocalStrategy(function(username, password, done) {
 //Facebook stuff
 
 passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK.clientID,
-    clientSecret: process.env.FACEBOOK.clientSecret,
+    clientID: variables.FACEBOOK.clientID,
+    clientSecret: variables.FACEBOOK.clientSecret,
     callbackURL: "https://localhost:3000/login/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
@@ -114,22 +118,23 @@ passport.use(new FacebookStrategy({
   }
 ));
 
-
-passport.use(new SpotifyStrategy({
-    clientID: process.env.SPOTIFY.clientId,
-    clientSecret: process.env.SPOTIFY.clientSecret,
-    callbackURL: "https://localhost:3000/login/spotify/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    done(profile.id);
-  }
-));
+//
+// passport.use(new SpotifyStrategy({
+//     clientID: variables.SPOTIFY.clientId,
+//     clientSecret: variables.SPOTIFY.clientSecret,
+//     callbackURL: "https://localhost:3000/login/spotify/callback"
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//     done(profile.id);
+//   }
+// ));
 
 
 //Back to original stuff
 
+
+app.use('/', auth(passport));
 app.use('/', routes);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

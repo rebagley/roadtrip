@@ -46,27 +46,29 @@ module.exports = function(passport) {
 
   // POST Login page
   router.post('/login', passport.authenticate('local'), function(req, res) {
-    if(req.user.wantsSpotify && !req.user.spotifyId){
-      res.redirect('/login/getSpotify')
-    }
-    else{
-      res.redirect('/');
-    }
-  });
-
-  router.get('/login/getSpotify',function(req,res){
-    res.render('getSpotify')
+    res.redirect('/')
   })
-
-  router.post('/login/getSpotify',function(req,res){
-    if(req.body.login){
-      res.redirect('/login/spotify')
-    }
-    else{
-      req.user.wantsSpotify = false;
-      res.redirect('/')
-    }
-  })
+  //   if(req.user.wantsSpotify && !req.user.spotifyId){
+  //     res.redirect('/login/getSpotify')
+  //   }
+  //   else{
+  //     res.redirect('/');
+  //   }
+  // });
+  //
+  // router.get('/login/getSpotify',function(req,res){
+  //   res.render('getSpotify')
+  // })
+  //
+  // router.post('/login/getSpotify',function(req,res){
+  //   if(req.body.login){
+  //     res.redirect('/login/spotify')
+  //   }
+  //   else{
+  //     req.user.wantsSpotify = false;
+  //     res.redirect('/')
+  //   }
+  // })
 
   // GET Logout page
   router.get('/logout', function(req, res) {
