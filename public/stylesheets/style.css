@@ -83,7 +83,7 @@ body {
 /* navigation bar */
 #navigation-bar {width:100%;}
 #navigation-bar ul {margin:0; padding:0; list-style:none; width:100%; border-radius:4px; overflow:hidden;}
-#navigation-bar li {float:left; padding:0; margin:0; list-style:none; width:20%;}
+#navigation-bar li {float:left; padding:0; margin:0; list-style:none; width:16%;}
 #navigation-bar a {
   color:#848484; font-size:20px; text-decoration:none; text-align:center;
   width:100%;

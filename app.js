@@ -91,7 +91,7 @@ passport.use(new FacebookStrategy({
     callbackURL: "https://localhost:3000/login/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    User.findOne({facebookId: profile.id }, function (err, user) {
+    User.findOne({$or:[{facebookId: profile.id},{email:profile.email}] }, function (err, user) {
       // if there's an error, finish trying to authenticate (auth failed)
       if (err) {
         console.error(err);
@@ -108,6 +108,9 @@ passport.use(new FacebookStrategy({
             return done(null, tempUser,true);
           }
         });
+      }
+      if(!user.facebookId){
+        user.facebookId = profile.id
       }
       // auth has has succeeded
       else{

@@ -20,28 +20,17 @@ router.get('/discover',function(req,res,next){
   res.render('discover')
 })
 
-router.get('/myAccount/:id',function(req,res,next){
-  User.findById(req.params.id,function(err,user){
-    if(err){
-      res.send(err);
-    }
-    else{
-      res.render('myAccount',user)
-    }
-  })
+router.get('/myAccount',function(req,res,next){
+  res.render('myAccount',req.user)
 })
 
-router.get('/friends/:id',function(req,res,next){
-  User.findById(req.params.id,function(err,user){
-    if(err){
-      res.send(err);
-    }
-    else{
-      res.render('friends',user)
-    }
-  })
+router.get('/friends',function(req,res,next){
+  res.render('friends',req.user)
 })
 
-router.get
+router.get('/myPlaylists',function(req,res,next){
+  res.render('myPlaylists',req.user);
+})
+
 
 module.exports = router;

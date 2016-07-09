@@ -24,6 +24,7 @@ module.exports = function(passport) {
     }
     var u = new User({
       username: req.body.username,
+      email: req.body.email,
       password: req.body.password,
       wantsSpotify:true
     });
@@ -83,18 +84,11 @@ module.exports = function(passport) {
     passport.authenticate('facebook'));
 
   router.get('/login/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    passport.authenticate('facebook', { scope:['email'],failureRedirect: '/login' }),
     function(req, res) {
       console.log(req.user)
       // Successful authentication, redirect home.
-      req.session.cart = [];
-      req.user.verified=true;
-      if(!req.user.defaultShipping){
-        res.redirect('/shipping')
-      }
-      else{
         res.redirect('/');
-      }
     });
 
     router.get('/login/spotify',passport.authenticate('spotify'));
