@@ -5,17 +5,26 @@
     {{error}}
   </div>
 {{/if}}
-<form method="POST" class="form-horizontal" style="margin-top: 50px; border: 0.5px solid gray; padding: 30px 30px 30px 30px">
-<h3>Login</h3>
-  <div class="form-group">
-      <input type="text" name="username" class="form-control" placeholder="Username">
+
+<img class="shittyLogo" src="/images/roadtriplogo.png" style="width: 20vw; min-width: 250px"/>
+<div class="container" id="bodyContainer">
+  <div class="heading">Create the perfect playlist for a roadtrip with friends.</div>
+  <div class="container-fluid">
+    <div class="row">
+      <form method="POST" class="form-horizontal">
+      <h3>Login</h3>
+        <div class="form-group">
+            <input type="text" name="username" class="form-control" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <button class="btn btn-success">Login</button>
+          <a class="btn btn-primary" href="/register">Register</a>
+          <a class="btn btn-primary" href="/login/facebook">Login with Facebook</a>
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="form-group">
-      <input type="password" name="password" class="form-control" id="password" placeholder="Password">
-  </div>
-  <div class="form-group">
-    <button class="btn btn-success">Login</button>
-    <a class="btn btn-primary" href="/register">Register</a>
-    <a class="btn btn-primary" href="/login/facebook">Login with Facebook</a>
-  </div>
-</form>
+</div>
