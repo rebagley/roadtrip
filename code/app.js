@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var FacebookStrategy = require('passport-facebook');
+var SpotifyStrategy = require('passport-spotify')
 var MongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
 
@@ -81,8 +82,8 @@ passport.use(new LocalStrategy(function(username, password, done) {
 //Facebook stuff
 
 passport.use(new FacebookStrategy({
-    process.env.FACEBOOK.clientID: '151149915295689',
-    process.env.FACEBOOK.clientSecret: '8500fbc720dc52d3cd9f59b75f88daf1',
+    clientID: process.env.FACEBOOK.clientID,
+    clientSecret: process.env.FACEBOOK.clientSecret,
     callbackURL: "https://warm-refuge-54272.herokuapp.com/login/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
@@ -94,18 +95,17 @@ passport.use(new FacebookStrategy({
       }
       // if no user present, auth failed
       if (!user) {
-        user = new User({facebookId:profile.id, defaultShipping:null});
+        user = new User({facebookId:profile.id, wantsSpotify:true});
         user.save(function(err,tempUser){
           if(err){
             return done(err, null);
           }
           else{
-            return done(null, tempUser);
+            return done(null, tempUser,true);
           }
         });
       }
       // auth has has succeeded
-
       else{
         console.log("success")
         return done(null, user);
@@ -115,7 +115,15 @@ passport.use(new FacebookStrategy({
 ));
 
 
-
+passport.use(new SpotifyStrategy({
+    clientID: process.env.SPOTIFY.clientId,
+    clientSecret: process.env.SPOTIFY.clientSecret,
+    callbackURL: "https://warm-refuge-54272.herokuapp.com/login/spotify/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    done(profile.id);
+  }
+));
 
 
 //Back to original stuff

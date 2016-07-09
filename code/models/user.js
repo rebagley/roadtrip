@@ -7,7 +7,9 @@ var userSchema = mongoose.Schema({
 	//username actually a phone#, but passport requires 'username' field
 	password: String,
 	facebookId: String,
-  mixLists:Array
+  spotifyId: String,
+  mixLists:Array,
+	wantsSpotify:Boolean
 })
 
 

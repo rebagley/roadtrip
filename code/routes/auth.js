@@ -25,9 +25,7 @@ module.exports = function(passport) {
     var u = new User({
       username: req.body.username,
       password: req.body.password,
-      defaultShipping: null,
-      verified:false,
-      verifyCode:randomCode()
+      wantsSpotify:true
     });
     console.log(u)
     u.save(function(err, user) {
@@ -48,8 +46,27 @@ module.exports = function(passport) {
 
   // POST Login page
   router.post('/login', passport.authenticate('local'), function(req, res) {
+    if(req.user.wantsSpotify && !req.user.spotifyId){
+      res.redirect('/login/getSpotify')
+    }
+    else{
       res.redirect('/');
+    }
   });
+
+  router.get('/login/getSpotify',function(req,res){
+    res.render('getSpotify')
+  })
+
+  router.post('/login/getSpotify',function(req,res){
+    if(req.body.login){
+      res.redirect('/login/spotify')
+    }
+    else{
+      req.user.wantsSpotify = false;
+      res.redirect('/')
+    }
+  })
 
   // GET Logout page
   router.get('/logout', function(req, res) {
@@ -66,8 +83,26 @@ module.exports = function(passport) {
   router.get('/login/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
-      res.redirect('/');
+      console.log(req.user)
+      // Successful authentication, redirect home.
+      req.session.cart = [];
+      req.user.verified=true;
+      if(!req.user.defaultShipping){
+        res.redirect('/shipping')
+      }
+      else{
+        res.redirect('/');
+      }
     });
+
+    router.get('/login/spotify',passport.authenticate('spotify'));
+
+    router.get('/login/spotify/callback',function(req,res){
+      passport.authenticate('spotify',function(id){
+        req.user.spotifyId = id;
+        res.redirect('/');
+      })
+    })
 
 
 
