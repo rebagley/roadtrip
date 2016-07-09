@@ -21,7 +21,7 @@ router.get('/discover',function(req,res,next){
 })
 
 router.get('/myAccount',function(req,res,next){
-  res.render('myAccount',req.user)
+  res.render('myAccount',{user:req.user})
 })
 
 router.get('/friends',function(req,res,next){

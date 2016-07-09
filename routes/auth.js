@@ -42,34 +42,37 @@ module.exports = function(passport) {
 
   // GET Login page
   router.get('/login', function(req, res) {
+    if(req.user){
+      res.redirect('/')
+    }
     res.render('login');
   });
 
   // POST Login page
   router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect('/')
+  //   res.redirect('/')
+  // })
+    if(req.user.wantsSpotify && !req.user.spotifyId){
+      res.redirect('/login/getSpotify')
+    }
+    else{
+      res.redirect('/');
+    }
+  });
+
+  router.get('/login/getSpotify',function(req,res){
+    res.render('getSpotify')
   })
-  //   if(req.user.wantsSpotify && !req.user.spotifyId){
-  //     res.redirect('/login/getSpotify')
-  //   }
-  //   else{
-  //     res.redirect('/');
-  //   }
-  // });
-  //
-  // router.get('/login/getSpotify',function(req,res){
-  //   res.render('getSpotify')
-  // })
-  //
-  // router.post('/login/getSpotify',function(req,res){
-  //   if(req.body.login){
-  //     res.redirect('/login/spotify')
-  //   }
-  //   else{
-  //     req.user.wantsSpotify = false;
-  //     res.redirect('/')
-  //   }
-  // })
+
+  router.post('/login/getSpotify',function(req,res){
+    if(req.body.login){
+      res.redirect('/login/spotify')
+    }
+    else{
+      req.user.wantsSpotify = false;
+      res.redirect('/')
+    }
+  })
 
   // GET Logout page
   router.get('/logout', function(req, res) {
@@ -93,11 +96,14 @@ module.exports = function(passport) {
 
     router.get('/login/spotify',passport.authenticate('spotify'));
 
-    router.get('/login/spotify/callback',function(req,res){
-      passport.authenticate('spotify',function(id){
-        req.user.spotifyId = id;
-        res.redirect('/');
-      })
+    router.get('/callback',passport.authenticate('spotify', {failureRedirect: '/error'}), function(req,res){
+      console.log(req.user);
+      res.redirect('/')
+      // passport.authenticate('spotify',function(profile){
+      //   console.log(profile);
+      //   req.user.spotifyId = profile._id;
+      //   res.redirect('/');
+      // })
     })
 
 

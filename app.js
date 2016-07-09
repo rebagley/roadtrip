@@ -8,9 +8,10 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var FacebookStrategy = require('passport-facebook');
-var SpotifyStrategy = require('passport-spotify');
+var SpotifyStrategy = require('passport-spotify').Strategy;
 var MongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
+
 
 var variables = require('./variables');
 
@@ -88,7 +89,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
 passport.use(new FacebookStrategy({
     clientID: variables.FACEBOOK.clientID,
     clientSecret: variables.FACEBOOK.clientSecret,
-    callbackURL: "https://localhost:3000/login/facebook/callback"
+    callbackURL: "http://localhost:3000/login/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOne({$or:[{facebookId: profile.id},{email:profile.email}] }, function (err, user) {
@@ -121,16 +122,21 @@ passport.use(new FacebookStrategy({
   }
 ));
 
-//
-// passport.use(new SpotifyStrategy({
-//     clientID: variables.SPOTIFY.clientId,
-//     clientSecret: variables.SPOTIFY.clientSecret,
-//     callbackURL: "https://localhost:3000/login/spotify/callback"
-//   },
-//   function(accessToken, refreshToken, profile, done) {
-//     done(profile.id);
-//   }
-// ));
+
+passport.use(new SpotifyStrategy({
+    clientID: variables.SPOTIFY.clientId,
+    clientSecret: variables.SPOTIFY.clientSecret,
+    callbackURL: "http://localhost:3000/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    console.log("toast", profile)
+    profile._id = "lol"
+    return done(null, profile);
+    // process.nextTick(function () {
+    //   return done(profile);
+    // });
+  }
+));
 
 
 //Back to original stuff
