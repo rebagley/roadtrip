@@ -4,6 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var LocalStrategy = require('passport-local');
+var FacebookStrategy = require('passport-facebook');
+var MongoStore = require('connect-mongo')(session);
+var mongoose = require('mongoose');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -21,6 +26,99 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//What Ruth put in
+var connect = process.env.MONGODB_URI || require('./models/connect').mongodb;
+mongoose.connect(connect);
+
+//Copied passport stuff
+app.use(session({
+    secret: process.env.SECRET,
+    // name: 'Catscoookie',
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    proxy: true,
+    resave: true,
+    saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+// passport strategy
+passport.use(new LocalStrategy(function(username, password, done) {
+    // Find the user with the given username
+    User.findOne({ username: username }, function (err, user) {
+      // if there's an error, finish trying to authenticate (auth failed)
+      if (err) {
+        console.error(err);
+        return done(err);
+      }
+      // if no user present, auth failed
+      if (!user) {
+        console.log(user);
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      // if passwords do not match, auth failed
+      if (user.password !== password) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      // auth has has succeeded
+      return done(null, user);
+    });
+  }
+));
+
+//Facebook stuff
+
+passport.use(new FacebookStrategy({
+    process.env.FACEBOOK.clientID: '151149915295689',
+    process.env.FACEBOOK.clientSecret: '8500fbc720dc52d3cd9f59b75f88daf1',
+    callbackURL: "https://warm-refuge-54272.herokuapp.com/login/facebook/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOne({facebookId: profile.id }, function (err, user) {
+      // if there's an error, finish trying to authenticate (auth failed)
+      if (err) {
+        console.error(err);
+        return done(err);
+      }
+      // if no user present, auth failed
+      if (!user) {
+        user = new User({facebookId:profile.id, defaultShipping:null});
+        user.save(function(err,tempUser){
+          if(err){
+            return done(err, null);
+          }
+          else{
+            return done(null, tempUser);
+          }
+        });
+      }
+      // auth has has succeeded
+
+      else{
+        console.log("success")
+        return done(null, user);
+      }
+    });
+  }
+));
+
+
+
+
+
+//Back to original stuff
 
 app.use('/', routes);
 app.use('/users', users);
