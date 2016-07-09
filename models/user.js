@@ -9,7 +9,8 @@ var userSchema = mongoose.Schema({
 	facebookId: String,
   spotifyId: String,
   mixLists:Array,
-	wantsSpotify:Boolean
+	wantsSpotify:Boolean,
+	friends:Array
 })
 
 
