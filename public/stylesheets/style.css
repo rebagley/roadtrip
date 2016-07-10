@@ -229,6 +229,7 @@ a:hover{
   cursor: pointer;
   transition: all 0.25s ease;
   justify-content: center;
+  padding: 8px;
   &:hover {
     color:#3c405c;
     background: white;
