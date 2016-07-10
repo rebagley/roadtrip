@@ -4,7 +4,8 @@ var LastfmAPI = require('lastfmapi');
 var _ = require('underscore-node');
 var $ = require("jquery")
 var mongoose = require('mongoose');
-mongoose.connect(require('../models/connect'))
+var variables = require('./variables')
+mongoose.connect(variables.MONGODB_URI)
 
 var List=require('../models/artist')
 
@@ -23,8 +24,8 @@ mod.save(function(err,item){
 var times=0;
 
 var lfm = new LastfmAPI({
-	'api_key' : '9a09b3b6f2f046ad39b28327bf5477e6',
-	'secret' : '47460a4caa8ab51daacfced86dcc574c'
+	'api_key' : variables.LASTFM.api_key,
+	'secret' : variables.LASTFM.secret
 });
 
 var out=[]
@@ -57,7 +58,7 @@ var getArtists=function(artist){
 				else{
 					out.push(a.name)
 				}
-				
+
 			})
 			//console.log(out)
 		}
@@ -87,7 +88,7 @@ lfm.artist.getSimilar({
 
 						tags.push(data.name)
 					}
-					
+
 					})
 					artist1[a.name] = tags
 					//console.log(i)
@@ -127,9 +128,9 @@ lfm.artist.getSimilar({
 												}
 												if(artists.length<10){
 													console.log('2')
-													
+
 												 	for(var key1 in artist1){
-												 		for(var key2 in artist2){											
+												 		for(var key2 in artist2){
 												 			if(_.intersection(artist1[key1],artist2[key2]).length>n){
 												 				if(!_.intersection(artists),key1){
 												 					artists.push(key1)
