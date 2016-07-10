@@ -26,18 +26,43 @@ module.exports = function(passport) {
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
-      wantsSpotify:true
+      wantsSpotify:true,
+      facebookId: null,
+      spotifyId:null
     });
-    console.log(u)
-    u.save(function(err, user) {
-      if (err) {
-        console.log(err);
-        res.status(500).redirect('/register');
+    User.findOne({email:u.email},function(err,user){
+      if(err){
+        res.send(err)
         return;
       }
-      console.log(user);
-      res.redirect('/login');
-    });
+      else if(user && !user.username){
+        user.username = u.username;
+        user.password = u.password;
+        console.log(user);
+        user.save(function(err, user) {
+          if (err) {
+            res.status(500).redirect('/register');
+          }
+          else{
+          console.log(user);
+          res.redirect('/login');
+          }
+        })
+      }
+      else{
+        console.log(u)
+        u.save(function(err, user) {
+          if (err) {
+            console.log(err);
+            res.status(500).redirect('/register');
+          }
+          else{
+            console.log(user);
+            res.redirect('/login');
+          }
+        });
+      }
+    })
   });
 
   // GET Login page
@@ -50,8 +75,7 @@ module.exports = function(passport) {
 
   // POST Login page
   router.post('/login', passport.authenticate('local'), function(req, res) {
-  //   res.redirect('/')
-  // })
+
     if(req.user.wantsSpotify && !req.user.spotifyId){
       res.redirect('/login/getSpotify')
     }
@@ -84,19 +108,26 @@ module.exports = function(passport) {
   //FACEBOOK
 
   router.get('/login/facebook',
-    passport.authenticate('facebook'));
+    passport.authenticate('facebook', { scope:['email']}), function(req,res){});
 
   router.get('/login/facebook/callback',
-    passport.authenticate('facebook', { scope:['email'],failureRedirect: '/login' }),
+    passport.authenticate('facebook',{failureRedirect: '/login'} ),
     function(req, res) {
+
       console.log(req.user)
       // Successful authentication, redirect home.
+      if(req.user.wantsSpotify && !req.user.spotifyId){
+        res.redirect('/login/getSpotify')
+      }
+      else{
         res.redirect('/');
+      }
     });
 
-    router.get('/login/spotify',passport.authenticate('spotify'));
+    router.get('/login/spotify',passport.authenticate('spotify',{scope:['user-read-email','playlist-modify-public']}));
+    // , {scope:['user-read-email','playlist-modify-public']}
 
-    router.get('/callback',passport.authenticate('spotify', {failureRedirect: '/error'}), function(req,res){
+    router.get('/login/spotify/callback',passport.authenticate('spotify',{failureRedirect: '/login'}), function(req,res){
       console.log(req.user);
       res.redirect('/')
       // passport.authenticate('spotify',function(profile){

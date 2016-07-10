@@ -8,6 +8,7 @@ router.use(function(req,res,next){
     res.redirect('/login')
   }
   else{
+    console.log(req.user)
     next();
   }
 })

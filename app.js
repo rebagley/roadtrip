@@ -89,29 +89,43 @@ passport.use(new LocalStrategy(function(username, password, done) {
 passport.use(new FacebookStrategy({
     clientID: variables.FACEBOOK.clientID,
     clientSecret: variables.FACEBOOK.clientSecret,
-    callbackURL: "http://localhost:3000/login/facebook/callback"
+    callbackURL: "http://localhost:3000/login/facebook/callback",
+    profileFields: ['id','email']
   },
   function(accessToken, refreshToken, profile, done) {
-    User.findOne({$or:[{facebookId: profile.id},{email:profile.email}] }, function (err, user) {
+    console.log(profile)
+    User.findOne({$or:[{facebookId: profile.id},{email:profile.emails[0].value}] }, function (err, user) {
       // if there's an error, finish trying to authenticate (auth failed)
+      console.log(profile.emails[0].value)
+
       if (err) {
         console.error(err);
         return done(err);
       }
       // if no user present, auth failed
       if (!user) {
-        user = new User({facebookId:profile.id, wantsSpotify:true});
+        user = new User({
+          facebookId:profile.id,
+          wantsSpotify:true,
+          email:profile.emails[0].value,
+          spotifyId:null
+        });
         user.save(function(err,tempUser){
           if(err){
             return done(err, null);
           }
           else{
-            return done(null, tempUser,true);
+            return done(null, tempUser);
           }
         });
       }
-      if(!user.facebookId){
+      else if(!user.facebookId){
         user.facebookId = profile.id
+        console.log("facebook id added")
+        user.save(function(err){
+          if(err){done(err)}
+        })
+        return done(null, user);
       }
       // auth has has succeeded
       else{
@@ -126,12 +140,26 @@ passport.use(new FacebookStrategy({
 passport.use(new SpotifyStrategy({
     clientID: variables.SPOTIFY.clientId,
     clientSecret: variables.SPOTIFY.clientSecret,
-    callbackURL: "http://localhost:3000/callback"
+    callbackURL: "http://localhost:3000/login/spotify/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log("toast", profile)
-    profile._id = "lol"
-    return done(null, profile);
+    console.log(profile.emails[0].value)
+    User.findOne({email:profile.emails[0].value},function(err,user){
+      console.log(user.email)
+      if(err){
+        return done(err)
+      }
+      else if(!user){
+        return done("no user")
+      }
+      else{
+        user.spotifyId = profile.id
+        user.save(function(err){
+          if(err){done(err)}
+        })
+        return done(null,user)
+      }
+    })
     // process.nextTick(function () {
     //   return done(profile);
     // });
