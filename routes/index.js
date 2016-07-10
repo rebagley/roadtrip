@@ -43,11 +43,39 @@ $.ajax({
   method: "get",
   url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
   success: function(data) {
-    console.log(data);
-    track.map()
+    var tracks = data.tracks;
+    var trackArr = [];
+    tracks.map(function(track){
+      var song = new Song({
+        name: track.name,
+        artist: track.artist.name
+      })
+      song.save(function(err,song){
+        if(err){
+          res.send(err)
+        }
+        else{
+          trackArr.push(song)
+        }
+      })
+    })
+    var top40 = new Playlist({
+      name: 'top40',
+      creator: null,
+      dateCreated: new Date(),
+      songs:trackArr
+    })
+    top40.save(function(err,playlist){
+      if(err){
+        res.send(err)
+      }
+      else{
+        res.render('discover',{tracks:playlist.songs})
+      }
+    })
   }
 })
-  res.render('discover')
+  //res.render('discover')
 })
 
 router.get('/myAccount',function(req,res,next){
