@@ -162,7 +162,7 @@ var getRelated= function(a1,a2,n,playlist){
 														//console.log('152')
 														for(var m=0; m<artists.length && m<20; m++){
 															//console.log('m')
-															getArtists(same[m],id)
+															getArtists(artists[m],id)
 														}
 														if(m==artists.length||m==20){
 															return id;
@@ -178,6 +178,8 @@ var getRelated= function(a1,a2,n,playlist){
 						}
 						count1++
 					});
+					console.log("done")
+					return;
 			  	});
 			}
 		}
