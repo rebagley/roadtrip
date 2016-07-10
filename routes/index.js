@@ -16,8 +16,9 @@ var Playlist = require('../models/playlist').Playlist;
 var Song = require('../models/playlist').Song;
 var List = require('../models/artist')
 var doSearch = require('../spotify')
-var getRelated =require('../lastfm');
-
+var getRelated =require('../lastfm').function;
+// var id=require('../lastfm').id
+// console.log(id)
 
 
 var SpotifyWebApi = require('spotify-web-api-node');
@@ -192,6 +193,8 @@ router.post('/', function(req,res){
   console.log(req.body.artist1)
   console.log(req.body.artist2)
   res.redirect('/search?artist1='+encodeURIComponent(req.body.artist1)+'&artist2='+encodeURIComponent(req.body.artist2))
+  var id=require('../lastfm').id
+  console.log(id,'id')
 })
 
 
@@ -237,6 +240,7 @@ var makeNewPlaylist = function(req,res){
     }
     else{
     Playlist.findById(tempPlaylist._id,function(err,playlist){
+      console.log('reached')
       getRelated(artist1,artist2,5,playlist._id);
     }).exec(function(err,playlist){
       if(err){
@@ -245,7 +249,6 @@ var makeNewPlaylist = function(req,res){
       else{
         var artists = playlist.artists;
 
-<<<<<<< HEAD
         var tracks = [];
         artists.forEach(function(artist){
           doSearch(artist,function(data){
@@ -268,8 +271,7 @@ var makeNewPlaylist = function(req,res){
   })}
 
 
-=======
->>>>>>> cee0efa232ba55623e728894295cdbe90001582a
+
 // //
 router.get('/export/:id',function(req,res,next){
   Playlist.findById(req.params.id, function(err,data){
