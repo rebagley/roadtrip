@@ -117,7 +117,7 @@ var getRelated= function(a1,a2,n,playlist){
 														//console.log(key)
 														for(var key2 in artist2){
 															if(key1===key2){
-																same.push(key1)
+																artists.push(key1)
 															}
 														}
 													}
@@ -160,11 +160,11 @@ var getRelated= function(a1,a2,n,playlist){
 													}
 													else{
 														//console.log('152')
-														for(var m=0; m<same.length && m<20; m++){
+														for(var m=0; m<artists.length && m<20; m++){
 															//console.log('m')
 															getArtists(same[m],id)
 														}
-														if(m==same.length||m==20){
+														if(m==artists.length||m==20){
 															return id;
 														}
 													}
@@ -184,4 +184,4 @@ var getRelated= function(a1,a2,n,playlist){
 	);
 }
 
-module.exports=getRelated;
+module.exports={function: getRelated, id: id};
