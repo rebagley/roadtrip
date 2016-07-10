@@ -16,7 +16,8 @@ mod.save(function(err,item){
 	}
 	else{
 		id=item._id;
-		//console.log(id)
+
+		console.log(id)
 	}
 })
 
@@ -29,7 +30,7 @@ var lfm = new LastfmAPI({
 
 var out=[]
 var db=[]
-var getArtists=function(artist,callback){
+var getArtists=function(artist){
 	var s=0;
 	lfm.artist.getSimilar({
 		'artist': artist,
@@ -43,17 +44,13 @@ var getArtists=function(artist,callback){
 					out.push(a.name)
 				}
 				if(_.intersection(out,a.name)&&_.indexOf(db,a.name)===-1 ){
-					console.log( a.name)
+					console.log(a.name)
 					db.push(a.name)
 					List.findByIdAndUpdate(id,{
 						$push: {artists: a.name},
-					}, function(err,list) {
-						if (err){
+					}, function(err) {
+						if (err)
 							console.error("Error saving Artist:", err);
-						}
-						else{
-							callback(list)
-						}
 						// else
 						// 	console.log("Successfully saved")
 					})
@@ -70,23 +67,22 @@ var getArtists=function(artist,callback){
 }
 
 
-var getRelated= function(a1,a2,n,callback){
-	console.log(callback)
+var getRelated= function(a1,a2,n){
 var artist1= {};
 var artist2={};
 lfm.artist.getSimilar({
 	'artist' : a1
-}, function (err, track,callback) {
+	}, function (err, track) {
 		if (err) { throw err; }
 		else{
 			var count1=0;
-				track.artist.map(function(a,callback){
+				track.artist.map(function(a){
 				lfm.artist.getTopTags({
 					'artist' : a.name
 				}, function (err, tag) {
 					//console.log(tag)
 					var tags=[];
-					tag.tag.map(function(data,callback){
+					tag.tag.map(function(data){
 					if(tags.length<10){
 
 						tags.push(data.name)
@@ -100,11 +96,11 @@ lfm.artist.getSimilar({
 						//console.log('pass')
 						lfm.artist.getSimilar({
 							'artist' : a2
-						}, function (err, track,callback) {
+							}, function (err, track) {
 								if (err) { throw err; }
 								else{
 									var count2=0
-										track.artist.map(function(a, i,callback){
+										track.artist.map(function(a, i){
 										lfm.artist.getTopTags({
 											'artist' : a.name
 										}, function (err, tag) {
@@ -149,7 +145,7 @@ lfm.artist.getSimilar({
 													// 	console.log(Object.keys(artist2)[0])
 													// if(times<3){
 														n--
-														getRelated(Object.keys(artist1)[20],Object.keys(artist2)[20],n,callback)
+														getRelated(Object.keys(artist1)[20],Object.keys(artist2)[20],n)
 														// times++
 													// }
 													// else{
@@ -159,16 +155,14 @@ lfm.artist.getSimilar({
 													}
 													for(var m=0; m<artists.length && m<20; m++){
 														//console.log('m')
-														console.log(typeof(callback))
-														getArtists(artists[m],callback)
+														getArtists(artists[m])
 													}
 												}
 												else{
 													//console.log('152')
 													for(var m=0; m<same.length && m<20; m++){
 														//console.log('m')
-														console.log(typeof(callback))
-														getArtists(same[m],callback)
+														getArtists(same[m])
 													}
 												}
 											}
