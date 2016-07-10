@@ -163,7 +163,7 @@ router.get('/search',function(req,res,next){
     console.log(req.body.artist1)
     console.log(req.body.artist2)
     res.redirect('/')
-  })
+  }) 
 
 
   var tempPlaylist = new Playlist({
