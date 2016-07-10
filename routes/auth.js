@@ -158,22 +158,17 @@ module.exports = function(passport) {
       res.redirect('/')
     });
 
-    router.get('/login/spotify',passport.authenticate('spotify',{scope:['user-read-email','playlist-modify-public','playlist-read-private','playlist-modify','playlist-modify-private']}));
-    //DELETE THIS AND UNCOMMENT LINE 131
+
     router.get('/spotify', function(req,res){
       res.render('getSpotify');
     })
-    // router.get('/login/spotify',passport.authenticate('spotify',{scope:['user-read-email','playlist-modify-public']}));
-    // , {scope:['user-read-email','playlist-modify-public']}
-    // router.get('/spotify', function(req,res){
-    //   res.render('getSpotify');
-    // })
-    router.get('/login/spotify',passport.authenticate('spotify',{scope:['user-read-email','playlist-modify-public']}));
+
+
+    router.get('/login/spotify',passport.authenticate('spotify',{scope:['user-read-email','playlist-modify-public','playlist-read-private','playlist-modify','playlist-modify-private']}));
+
 
 
     router.get('/login/spotify/callback',passport.authenticate('spotify',{failureRedirect: '/login'}), function(req,res){
-
-
       console.log(req.user);
       res.redirect('/')
       // passport.authenticate('spotify',function(profile){
