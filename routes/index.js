@@ -1,5 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var LastfmAPI = require('lastfmapi');
+
+var lfm = new LastfmAPI({
+  'api_key' : variables.LASTFM.api_key,
+  'secret' : variables.LASTFM.secret
+});
 
 var User = require('../models/user');
 var Playlist = require('../models/playlist').Playlist;
@@ -14,7 +20,7 @@ router.use(function(req,res,next){
     res.redirect('/login')
   }
   else{
-    console.log(req.user)
+    //console.log(req.user)
     next();
   }
 })
@@ -24,6 +30,23 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/discover',function(req,res,next){
+function(){
+  lfm.chart.getTopTracks( function(err, tracks){
+    if(err){
+      console.log(err)
+    }
+    else{
+      console.log(tracks)
+    }
+  })
+}
+// $.ajax({
+//   method: "get",
+//   url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
+//   success: function(data) {
+//     console.log(data.artist.name);
+//   }
+// })
   res.render('discover')
 })
 
@@ -103,6 +126,13 @@ router.get('/search',function(req,res,next){
         tracks=tracks.concat(data.tracks)
     })
   })
+
+  router.post('/', function(req,res){
+    console.log(req.body.artist1)
+    console.log(req.body.artist2)
+    res.redirect('/')
+  })
+
 
   var tempPlaylist = new Playlist({
     name: artist1+" and "+artist2,
