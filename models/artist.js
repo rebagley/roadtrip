@@ -3,7 +3,9 @@ var mongoose = require('mongoose')
 
 
 var artistSchema = mongoose.Schema({
-	artists: [String]
+	name:String,
+	picture:String,
+	url:String
 })
 
 
