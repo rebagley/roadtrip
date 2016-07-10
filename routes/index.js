@@ -16,8 +16,9 @@ var Playlist = require('../models/playlist').Playlist;
 var Song = require('../models/playlist').Song;
 var List = require('../models/artist')
 var doSearch = require('../spotify')
-var getRelated =require('../lastfm');
-
+var getRelated =require('../lastfm').function;
+// var id=require('../lastfm').id
+// console.log(id)
 
 
 var SpotifyWebApi = require('spotify-web-api-node');
@@ -192,7 +193,8 @@ router.post('/', function(req,res){
   console.log(req.body.artist1)
   console.log(req.body.artist2)
   res.redirect('/search?artist1='+encodeURIComponent(req.body.artist1)+'&artist2='+encodeURIComponent(req.body.artist2))
-  console.log(id)
+  var id=require('../lastfm').id
+  console.log(id,'id')
 })
 
 
