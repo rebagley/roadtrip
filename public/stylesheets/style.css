@@ -132,7 +132,7 @@ body {
   transition: all 0.25s ease;
   position: absolute;
   top: 60%;
-  left: 50%;
+  left: 49%;
   transform: translate(-50%,0%);
   &:hover {
     color:white;
@@ -352,6 +352,7 @@ a:hover{
   width:100%; height:auto;
   background-color:#ecf0f1;
   overflow:hidden;
+  margin-bottom: 10px;
   box-shadow:0 0 5px rgba(0,0,0,0.3);
 }
 
@@ -392,7 +393,7 @@ a#pull:hover:before{
 }
 #navigation-bar ul {margin:0; padding:0; list-style:none; width:100%; border-radius:4px; overflow:hidden; max-width: 1200px;
 margin: 0 auto; /*make the menu center-aligned*/}
-#navigation-bar li {float:left; padding:0; margin:0; list-style:none; width:16%;}
+#navigation-bar li {float:left; padding:0; margin:0; list-style:none; width:20%;}
 #navigation-bar a {
   color:#848484; font-size:20px; text-decoration:none; text-align:center;
   width:100%;

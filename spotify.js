@@ -68,6 +68,16 @@ var doLogin = function(callback, playlist) {
     console.log('Something went wrong!', err);
   });
 
+  var newPlaylist= function(data){
+  	spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
+  .then(function(data) {
+    console.log(data)
+    console.log('Created playlist!');
+  }, function(err) {
+    console.log('Something went wrong!', err);
+  })
+  } 
+
 // Add tracks to a playlist
 spotifyApi.addTracksToPlaylist('thelinmichael', '5ieJqeLJjjI8iJWaxeBLuK', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"])
   .then(function(data) {

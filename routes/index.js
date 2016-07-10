@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var LastfmAPI = require('lastfmapi');
 var variables = require('../variables');
+//var SpotifyWebApi = require('spotify-web-api-node');
+// var spotifyApi = require('spotify-web-api-node');
+var spotify=require('../spotify.js')
 
 var lfm = new LastfmAPI({
   'api_key' : "9a09b3b6f2f046ad39b28327bf5477e6",
@@ -15,10 +18,15 @@ var List = require('../models/artist')
 var doSearch = require('../spotify')
 var getRelated =require('../lastfm');
 
-// var getRelated=items.getRelated
-// console.log(getRelated)
-// var id=items.getRelated
-// console.log(id)
+
+
+var SpotifyWebApi = require('spotify-web-api-node');
+var spotifyCredentials = require('../variables').SPOTIFY;
+
+var spotifyApi = new SpotifyWebApi({
+  clientId : spotifyCredentials.clientId,
+  clientSecret: spotifyCredentials.clientSecret
+});
 
 /* GET home page. */
 router.use(function(req,res,next){
@@ -100,43 +108,24 @@ router.get('/discover',function(req,res,next){
   })
 
 
-// $.ajax({
-//   method: "get",
-//   url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
-//   success: function(data) {
-//     var tracks = data.tracks;
-//     var trackArr = [];
-//     tracks.map(function(track){
-//       var song = new Song({
-//         name: track.name,
-//         artist: track.artist.name
-//       })
-//       song.save(function(err,song){
-//         if(err){
-//           res.send(err)
-//         }
-//         else{
-//           trackArr.push(song)
-//         }
-//       })
-//     })
-//     var top40 = new Playlist({
-//       name: 'top40',
-//       creator: null,
-//       dateCreated: new Date(),
-//       songs:trackArr
-//     })
-//     top40.save(function(err,playlist){
-//       if(err){
-//         res.send(err)
-//       }
-//       else{
-//         res.render('discover',{tracks:playlist.songs})
-//       }
-//     })
-//   }
-// })
-  //res.render('discover')
+var makePlaylist = function(trackArr){
+  var top40 = new Playlist({
+  name: 'top40',
+  creator: null,
+  dateCreated: new Date(),
+  songs:trackArr
+})
+top40.save(function(err,playlist){
+  if(err){
+    res.send(err)
+  }
+  else{
+    console.log("LOOK HERE", playlist);
+    res.render('discover',{tracks:playlist.songs})
+  }
+})
+}
+
 })
 
 router.get('/myAccount',function(req,res,next){
@@ -256,6 +245,7 @@ var makeNewPlaylist = function(req,res){
       else{
         var artists = playlist.artists;
 
+<<<<<<< HEAD
         var tracks = [];
         artists.forEach(function(artist){
           doSearch(artist,function(data){
@@ -278,24 +268,27 @@ var makeNewPlaylist = function(req,res){
   })}
 
 
+=======
+>>>>>>> cee0efa232ba55623e728894295cdbe90001582a
 // //
-// router.get('/export/:id',function(req,res,next){
-//   spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
-//   .then(function(data) {
-//     console.log('Created playlist!');
-//   }, function(err) {
-//     console.log('Something went wrong!', err);
-//   });
-//
-// // Add tracks to a playlist
-// spotifyApi.addTracksToPlaylist('thelinmichael', '5ieJqeLJjjI8iJWaxeBLuK', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"])
-//   .then(function(data) {
-//     console.log('Added tracks to playlist!');
-//   }, function(err) {
-//     console.log('Something went wrong!', err);
-//   });
-// })
-
+router.get('/export/:id',function(req,res,next){
+  Playlist.findById(req.params.id, function(err,data){
+    if(err){
+      console.log(err)
+    }
+    else{
+      spotify.newPlaylist(data)
+      // console.log(data)
+  //   spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
+  // .then(function(data) {
+  //   console.log(data)
+  //   console.log('Created playlist!');
+  // }, function(err) {
+  //   console.log('Something went wrong!', err);
+  // })
+  }
+  });
+})
 
 
 module.exports = router;

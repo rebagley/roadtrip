@@ -12,7 +12,7 @@ $(document).ready(function(){
 
   })
 
-  $('.heading').addClass('animated bounceIn');
+  // $('.heading').addClass('animated bounceIn');
   // $('button').addClass('animated pulse')
   // $('.shittyLogo').addClass('animated bounceIn');
   // $('.shittyLogo').animate({opacity: 0}, 1000);
