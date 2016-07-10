@@ -2,6 +2,15 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user')
 
+var SpotifyWebApi = require('spotify-web-api-node');
+var spotifyCredentials = require('../variables').SPOTIFY;
+
+var spotifyApi = new SpotifyWebApi({
+  clientId : spotifyCredentials.clientId,
+  clientSecret: spotifyCredentials.clientSecret
+});
+
+
 
 module.exports = function(passport) {
 
@@ -79,9 +88,20 @@ module.exports = function(passport) {
     if(req.user.wantsSpotify && !req.user.spotifyId){
       res.redirect('/login/getSpotify')
     }
-    else{
-      res.redirect('/');
+    else if(req.user.spotifyId){
+      spotifyApi.clientCredentialsGrant()
+      .then(function(data) {
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+        // Save the access token so that it's used in future calls
+        spotifyApi.setAccessToken(data.body['access_token']);
+        req.user.spotifyToken = data.body['access_token'];
+      }
+      , function(err) {
+        console.log('Something went wrong when retrieving an access token', err.message);
+      });
     }
+    res.redirect('/')
   });
 
   router.get('/login/getSpotify',function(req,res){
@@ -119,15 +139,31 @@ module.exports = function(passport) {
       if(req.user.wantsSpotify && !req.user.spotifyId){
         res.redirect('/login/getSpotify')
       }
-      else{
-        res.redirect('/');
+      else if(req.user.spotifyId){
+        spotifyApi.clientCredentialsGrant()
+        .then(function(data) {
+          console.log('The access token expires in ' + data.body['expires_in']);
+          console.log('The access token is ' + data.body['access_token']);
+
+
+          // Save the access token so that it's used in future calls
+          spotifyApi.setAccessToken(data.body['access_token']);
+          req.user.spotifyToken = data.body['access_token'];
+
+        }
+        , function(err) {
+          console.log('Something went wrong when retrieving an access token', err.message);
+        });
       }
+      res.redirect('/')
     });
 
-    router.get('/login/spotify',passport.authenticate('spotify',{scope:['user-read-email','playlist-modify-public']}));
+    router.get('/login/spotify',passport.authenticate('spotify',{scope:['user-read-email','playlist-modify-public','playlist-read-private','playlist-modify','playlist-modify-private']}));
     // , {scope:['user-read-email','playlist-modify-public']}
 
     router.get('/login/spotify/callback',passport.authenticate('spotify',{failureRedirect: '/login'}), function(req,res){
+
+
       console.log(req.user);
       res.redirect('/')
       // passport.authenticate('spotify',function(profile){

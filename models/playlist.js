@@ -8,7 +8,7 @@ var songSchema=mongoose.Schema({
 })
 
 var playlistSchema = mongoose.Schema({
-	name:String
+	name:String,
 	creator:{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'

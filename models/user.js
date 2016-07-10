@@ -11,7 +11,7 @@ var userSchema = mongoose.Schema({
   playlists:Array,
 	wantsSpotify:Boolean,
 	friends:Array,
-	spotifyToken:String
+	spotifyToken:String,
 })
 
 

@@ -1,16 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var SpotifyWebApi = require('spotify-web-api-node');
-var spotifyCredentials = require('../variables').SPOTIFY;
 
 var User = require('../models/user');
 var Playlist = require('../models/playlist').Playlist;
-var Song = = require('../models/playlist').Song;
+var Song = require('../models/playlist').Song;
 
-var spotifyApi = new SpotifyWebApi({
-  clientId : spotifyCredentials.clientId,
-  clientSecret: spotifyCredentials.clientSecret
-});
 
 /* GET home page. */
 router.use(function(req,res,next){

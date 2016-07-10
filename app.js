@@ -17,7 +17,17 @@ var variables = require('./variables');
 
 var routes = require('./routes/index');
 var auth = require('./routes/auth');
-var User = require('./models/user')
+var User = require('./models/user');
+
+
+var SpotifyWebApi = require('spotify-web-api-node');
+var spotifyCredentials = require('./variables').SPOTIFY;
+
+var spotifyApi = new SpotifyWebApi({
+  clientId : spotifyCredentials.clientId,
+  clientSecret: spotifyCredentials.clientSecret
+});
+
 
 var app = express();
 
@@ -143,7 +153,7 @@ passport.use(new SpotifyStrategy({
     callbackURL: "http://localhost:3000/login/spotify/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile.emails[0].value)
+    console.log(profile)
     User.findOne({email:profile.emails[0].value},function(err,user){
       console.log(user.email)
       if(err){
@@ -153,18 +163,29 @@ passport.use(new SpotifyStrategy({
         return done("no user")
       }
       else{
-        user.spotifyId = profile.id
-        user.save(function(err){
-          if(err){done(err)}
-        })
-        return done(null,user)
+        spotifyApi.clientCredentialsGrant()
+        .then(function(data) {
+          console.log('The access token expires in ' + data.body['expires_in']);
+          console.log('The access token is ' + data.body['access_token']);
+
+          // Save the access token so that it's used in future calls
+          spotifyApi.setAccessToken(data.body['access_token']);
+          user.spotifyToken = data.body['access_token'];
+          user.spotifyId = profile.id;
+          user.spotifyRefreshToken = data.body['refresh_token']
+          user.save(function(err){
+            if(err){done(err)}
+          })
+          return done(null,user)
+        }
+        , function(err) {
+          console.log('Something went wrong when retrieving an access token', err.message);
+        });
       }
+
     })
-    // process.nextTick(function () {
-    //   return done(profile);
-    // });
-  }
-));
+  }))
+
 
 
 //Back to original stuff
