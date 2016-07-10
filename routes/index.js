@@ -190,7 +190,6 @@ function timeSince(date) {
     return Math.floor(seconds) + " seconds";
 }
 
-<<<<<<< HEAD
 router.post('/', function(req,res){
   console.log(req.body.artist1)
   console.log(req.body.artist2)
@@ -201,21 +200,17 @@ var cbfunc = function(fun,cb){
   return cb(fun);
 }
 
-=======
->>>>>>> 71391b0219c5f4626855773f44fa3e5f77066d41
+
 router.get('/search',function(req,res,next){
   var artist1 = decodeURI(req.query.artist1);
   var artist2 = decodeURI(req.query.artist2);
   var tempObj= null;
-<<<<<<< HEAD
+
   cbfunc(getRelated(artist1,artist2,5),function(id){
-    console.log("done")
+    console.log("done",id)
+
   })
-=======
-  getRelated(artist1,artist2,5,function(list){
-    tempObj=list
-  });
->>>>>>> 71391b0219c5f4626855773f44fa3e5f77066d41
+
   console.log(tempObj)
   var artists = tempObj.artists;
 
@@ -226,16 +221,8 @@ router.get('/search',function(req,res,next){
     })
   })
 
-<<<<<<< HEAD
-=======
-  router.post('/', function(req,res){
-    console.log(req.body.artist1)
-    console.log(req.body.artist2)
-    res.redirect('/')
-  }) 
 
 
->>>>>>> 71391b0219c5f4626855773f44fa3e5f77066d41
   var tempPlaylist = new Playlist({
     name: artist1+" and "+artist2,
     creator: req.user._id,
@@ -253,10 +240,8 @@ router.get('/search',function(req,res,next){
       res.render('playlist',playlist)
     }
   })
-<<<<<<< HEAD
+
 });
-=======
-})
 
 // router.post('/',function(req,res,next){
 //   console.log('post')
@@ -315,7 +300,7 @@ router.get('/search',function(req,res,next){
 //     }
 //   })
 // });
->>>>>>> 71391b0219c5f4626855773f44fa3e5f77066d41
+
 //
 // router.post('/',function(req,res,next){
 //   res.redirect('/playlist')
