@@ -1,0 +1,30 @@
+<div class="user-badge">
+  <div class="user-badge-avatar">
+    <i class='fa fa-music'></i>
+  </div>
+  <div class="login">Top 20</div>
+  <div class="heading">
+    <ul>
+      <li>{{creator}}</li>
+      <li>{{timeSince}} ago</li>
+      <li>{{followers.length}} followers</li>
+    </ul>
+  </div>
+  <table>
+    <thead><tr>
+      <td>Name</td>
+      <td>Artist</td>
+      <td>Album</td>
+    </tr></thead>
+    <tbody>
+      {{#each tracks}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{artist}}</td>
+          <td>{{album}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <!-- <a type="button-cool-search" href="/export/{{spotifyId}}">Add to Playlist</a> -->
+</div>
