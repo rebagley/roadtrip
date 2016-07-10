@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var LastfmAPI = require('lastfmapi');
-
+var variables = require('../variables');
 var lfm = new LastfmAPI({
   'api_key' : variables.LASTFM.api_key,
   'secret' : variables.LASTFM.secret
@@ -13,7 +13,7 @@ var Song = require('../models/playlist').Song;
 var doSearch = require('../spotify')
 var items =require('../lastfm');
 
-var getRelated=items.getRelated
+var getRelated=items.getRelated;
 
 /* GET home page. */
 router.use(function(req,res,next){
@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/discover',function(req,res,next){
-function(){
+
   lfm.chart.getTopTracks( function(err, tracks){
     if(err){
       console.log(err)
@@ -40,7 +40,7 @@ function(){
       console.log(tracks)
     }
   })
-}
+
 // $.ajax({
 //   method: "get",
 //   url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
@@ -111,54 +111,54 @@ function timeSince(date) {
     return Math.floor(seconds) + " seconds";
 }
 
-router.get('/search',function(req,res,next){
-  var artist1 = decodeURI(req.query.artist1);
-  var artist2 = decodeURI(req.query.artist2);
-  var tempObj= null;
-  getRelated(artist1,artist2,5,function(list){
-    tempObj=list
-  });
-  console.log(tempObj)
-  var artists = tempObj.artists;
-
-  var tracks = [];
-  artists.forEach(function(artist){
-    doSearch(artist,function(data){
-        tracks=tracks.concat(data.tracks)
-    })
-  })
-
-  router.post('/', function(req,res){
-    console.log(req.body.artist1)
-    console.log(req.body.artist2)
-    res.redirect('/')
-
-
-
-  var tempPlaylist = new Playlist({
-    name: artist1+" and "+artist2,
-    creator: req.user._id,
-    dateCreated: new Date(),
-    followers: [req.user._id],
-    spotifyId: null,
-    songs: tracks
-  });
-  tempPlaylist.save(function(err,playlist){
-    if(err){
-      res.send(err)
-    }
-    else{
-      req.user.update({playlists:req.user.playlists.push(playlist)},function(err){})
-      res.render('playlist',playlist)
-    }
-  })
-})
-
-router.post('/',function(req,res,next){
-  res.redirect('/playlist')
-})
-
+// router.get('/search',function(req,res,next){
+//   var artist1 = decodeURI(req.query.artist1);
+//   var artist2 = decodeURI(req.query.artist2);
+//   var tempObj= null;
+//   getRelated(artist1,artist2,5,function(list){
+//     tempObj=list
+//   });
+//   console.log(tempObj)
+//   var artists = tempObj.artists;
 //
+//   var tracks = [];
+//   artists.forEach(function(artist){
+//     doSearch(artist,function(data){
+//         tracks=tracks.concat(data.tracks)
+//     })
+//   })
+//
+// router.post('/', function(req,res){
+//   console.log(req.body.artist1)
+//   console.log(req.body.artist2)
+//   res.redirect('/')
+//
+//
+//
+//   var tempPlaylist = new Playlist({
+//     name: artist1+" and "+artist2,
+//     creator: req.user._id,
+//     dateCreated: new Date(),
+//     followers: [req.user._id],
+//     spotifyId: null,
+//     songs: tracks
+//   });
+//   tempPlaylist.save(function(err,playlist){
+//     if(err){
+//       res.send(err)
+//     }
+//     else{
+//       req.user.update({playlists:req.user.playlists.push(playlist)},function(err){})
+//       res.render('playlist',playlist)
+//     }
+//   })
+// });
+//
+// router.post('/',function(req,res,next){
+//   res.redirect('/playlist')
+// })
+//
+// //
 // router.get('/export/:id',function(req,res,next){
 //   spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
 //   .then(function(data) {
