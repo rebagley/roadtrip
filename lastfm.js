@@ -8,6 +8,23 @@ var variables = require('./variables')
 
 var List=require('./models/artist')
 
+<<<<<<< HEAD
+=======
+var id=""
+var mod= new List({
+	
+});
+mod.save(function(err,item){
+	if(err){
+		console.log(err)
+	}
+	else{
+		id=item._id;
+
+		console.log(id)
+	}
+})
+>>>>>>> 71391b0219c5f4626855773f44fa3e5f77066d41
 
 var times=0;
 

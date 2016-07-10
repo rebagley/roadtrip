@@ -4,17 +4,21 @@ var LastfmAPI = require('lastfmapi');
 var variables = require('../variables');
 
 var lfm = new LastfmAPI({
-  'api_key' : variables.LASTFM.api_key,
-  'secret' : variables.LASTFM.secret
+  'api_key' : "9a09b3b6f2f046ad39b28327bf5477e6",
+  'secret' : "47460a4caa8ab51daacfced86dcc574c"
 });
 
 var User = require('../models/user');
 var Playlist = require('../models/playlist').Playlist;
 var Song = require('../models/playlist').Song;
+var List = require('../models/artist')
 var doSearch = require('../spotify')
 var items =require('../lastfm');
 
-var getRelated=items.getRelated;
+var getRelated=items.getRelated
+console.log(getRelated)
+var id=items.getRelated
+console.log(id)
 
 /* GET home page. */
 router.use(function(req,res,next){
@@ -37,45 +41,92 @@ router.get('/discover',function(req,res,next){
       console.log(err)
     }
     else{
+      var tracks = tracks.track;
       console.log(tracks)
+      var trackArr = [];
+      tracks.map(function(track){
+        // console.log("NEW ONE", track)
+        console.log(track.image[0])
+        var song = new Song({
+          name: track.name,
+          artist: track.artist.name,
+          url: track.url,
+          picture: track.image[3]['#text']
+        })
+        //console.log(song)
+        // console.log("SONG",song)
+        song.save(function(err,song){
+          if(err){
+            res.send(err)
+          }
+          else{
+            // console.log("SAVED SONG", song,trackArr)
+            trackArr.push(song)
+
+            if (trackArr.length==20){
+              makePlaylist(trackArr);
+            }
+          }
+        })
+      })
+      //console.log("ARRAY",trackArr)
+
     }
   })
-$.ajax({
-  method: "get",
-  url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
-  success: function(data) {
-    var tracks = data.tracks;
-    var trackArr = [];
-    tracks.map(function(track){
-      var song = new Song({
-        name: track.name,
-        artist: track.artist.name
-      })
-      song.save(function(err,song){
-        if(err){
-          res.send(err)
-        }
-        else{
-          trackArr.push(song)
-        }
-      })
-    })
-    var top40 = new Playlist({
-      name: 'top40',
-      creator: null,
-      dateCreated: new Date(),
-      songs:trackArr
-    })
-    top40.save(function(err,playlist){
-      if(err){
-        res.send(err)
-      }
-      else{
-        res.render('discover',{tracks:playlist.songs})
-      }
-    })
+
+var makePlaylist = function(trackArr)
+{var top40 = new Playlist({
+  name: 'top40',
+  creator: null,
+  dateCreated: new Date(),
+  songs:trackArr
+})
+top40.save(function(err,playlist){
+  if(err){
+    res.send(err)
+  }
+  else{
+    console.log("LOOK HERE", playlist);
+    res.render('discover',{tracks:playlist.songs})
   }
 })
+}
+// $.ajax({
+//   method: "get",
+//   url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
+//   success: function(data) {
+//     var tracks = data.tracks;
+//     var trackArr = [];
+//     tracks.map(function(track){
+//       var song = new Song({
+//         name: track.name,
+//         artist: track.artist.name
+//       })
+//       song.save(function(err,song){
+//         if(err){
+//           res.send(err)
+//         }
+//         else{
+//           trackArr.push(song)
+//         }
+//       })
+//     })
+//     var top40 = new Playlist({
+//       name: 'top40',
+//       creator: null,
+//       dateCreated: new Date(),
+//       songs:trackArr
+//     })
+//     top40.save(function(err,playlist){
+//       if(err){
+//         res.send(err)
+//       }
+//       else{
+//         res.render('discover',{tracks:playlist.songs})
+//       }
+//     })
+//   }
+// })
   //res.render('discover')
 })
 
@@ -139,6 +190,7 @@ function timeSince(date) {
     return Math.floor(seconds) + " seconds";
 }
 
+<<<<<<< HEAD
 router.post('/', function(req,res){
   console.log(req.body.artist1)
   console.log(req.body.artist2)
@@ -149,13 +201,21 @@ var cbfunc = function(fun,cb){
   return cb(fun);
 }
 
+=======
+>>>>>>> 71391b0219c5f4626855773f44fa3e5f77066d41
 router.get('/search',function(req,res,next){
   var artist1 = decodeURI(req.query.artist1);
   var artist2 = decodeURI(req.query.artist2);
   var tempObj= null;
+<<<<<<< HEAD
   cbfunc(getRelated(artist1,artist2,5),function(id){
     console.log("done")
   })
+=======
+  getRelated(artist1,artist2,5,function(list){
+    tempObj=list
+  });
+>>>>>>> 71391b0219c5f4626855773f44fa3e5f77066d41
   console.log(tempObj)
   var artists = tempObj.artists;
 
@@ -166,6 +226,16 @@ router.get('/search',function(req,res,next){
     })
   })
 
+<<<<<<< HEAD
+=======
+  router.post('/', function(req,res){
+    console.log(req.body.artist1)
+    console.log(req.body.artist2)
+    res.redirect('/')
+  }) 
+
+
+>>>>>>> 71391b0219c5f4626855773f44fa3e5f77066d41
   var tempPlaylist = new Playlist({
     name: artist1+" and "+artist2,
     creator: req.user._id,
@@ -183,7 +253,69 @@ router.get('/search',function(req,res,next){
       res.render('playlist',playlist)
     }
   })
+<<<<<<< HEAD
 });
+=======
+})
+
+// router.post('/',function(req,res,next){
+//   console.log('post')
+//   if(id){
+//     List.findById(id, function(err,artists){
+//       if(err){
+//         console.log(err)
+//       }
+//       else{
+//         console.log(artists)
+//       }
+//     })
+//   }
+//   res.redirect('/playlist')
+// })
+
+// router.get('/search',function(req,res,next){
+//   var artist1 = decodeURI(req.query.artist1);
+//   var artist2 = decodeURI(req.query.artist2);
+//   var tempObj= null;
+//   getRelated(artist1,artist2,5,function(list){
+//     tempObj=list
+//   });
+//   console.log(tempObj)
+//   var artists = tempObj.artists;
+//
+//   var tracks = [];
+//   artists.forEach(function(artist){
+//     doSearch(artist,function(data){
+//         tracks=tracks.concat(data.tracks)
+//     })
+//   })
+//
+// router.post('/', function(req,res){
+//   console.log(req.body.artist1)
+//   console.log(req.body.artist2)
+//   res.redirect('/')
+//
+//
+//
+//   var tempPlaylist = new Playlist({
+//     name: artist1+" and "+artist2,
+//     creator: req.user._id,
+//     dateCreated: new Date(),
+//     followers: [req.user._id],
+//     spotifyId: null,
+//     songs: tracks
+//   });
+//   tempPlaylist.save(function(err,playlist){
+//     if(err){
+//       res.send(err)
+//     }
+//     else{
+//       req.user.update({playlists:req.user.playlists.push(playlist)},function(err){})
+//       res.render('playlist',playlist)
+//     }
+//   })
+// });
+>>>>>>> 71391b0219c5f4626855773f44fa3e5f77066d41
 //
 // router.post('/',function(req,res,next){
 //   res.redirect('/playlist')
