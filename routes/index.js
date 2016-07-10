@@ -3,17 +3,20 @@ var router = express.Router();
 var LastfmAPI = require('lastfmapi');
 
 var lfm = new LastfmAPI({
-  'api_key' : variables.LASTFM.api_key,
-  'secret' : variables.LASTFM.secret
+  'api_key' : "9a09b3b6f2f046ad39b28327bf5477e6",
+  'secret' : "47460a4caa8ab51daacfced86dcc574c"
 });
 
 var User = require('../models/user');
 var Playlist = require('../models/playlist').Playlist;
 var Song = require('../models/playlist').Song;
+var List = require('../models/artist')
 var doSearch = require('../spotify')
 var items =require('../lastfm');
 
 var getRelated=items.getRelated
+var id=items.getRelated
+console.log(id)
 
 /* GET home page. */
 router.use(function(req,res,next){
@@ -31,16 +34,16 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/discover',function(req,res,next){
-function(){
-  lfm.chart.getTopTracks( function(err, tracks){
-    if(err){
-      console.log(err)
-    }
-    else{
-      console.log(tracks)
-    }
-  })
-}
+// function(){
+//   lfm.chart.getTopTracks( function(err, tracks){
+//     if(err){
+//       console.log(err)
+//     }
+//     else{
+//       console.log(tracks)
+//     }
+//   })
+// }
 // $.ajax({
 //   method: "get",
 //   url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
@@ -155,6 +158,16 @@ router.get('/search',function(req,res,next){
 })
 
 router.post('/',function(req,res,next){
+  if(id){
+    List.findById(id, function(err,artists){
+      if(err){
+        console.log(err)
+      }
+      else{
+        console.log(artists)
+      }
+    })
+  }
   res.redirect('/playlist')
 })
 

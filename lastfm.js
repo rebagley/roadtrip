@@ -9,7 +9,9 @@ var variables = require('./variables')
 var List=require('./models/artist')
 
 var id=""
-var mod= new List({});
+var mod= new List({
+	
+});
 mod.save(function(err,item){
 	if(err){
 		console.log(err)
