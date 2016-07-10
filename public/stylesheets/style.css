@@ -106,7 +106,7 @@ body {
   display: block;
 }
 
-.button-cool {
+.button-cool, .button-cool-search {
   outline:none;
   height: 40px;
   text-align: center;
@@ -153,9 +153,13 @@ body {
     background: #1ECD97;
   }
 }
-.button-cool:hover{
+.button-cool:hover, .button-cool-search:hover{
   color:white;
   background: #1ECD97;
+}
+
+.button-cool-search{
+  top: 75% !important;
 }
 .button-uncool {
   outline:none;

@@ -1,23 +1,30 @@
-<h1>{{playlist.name}}</h1>
-{{creator}}
-{{timeSince}} ago
-{{followers.length}} followers
-
-<a type="button" href="/export/{{spotifyId}}">Export to Spotify</a>
-
-<table>
-  <thead><tr>
-    <td>Name</td>
-    <td>Artist</td>
-    <td>Album</td>
-  </tr></thead>
-  <tbody>
-    {{#each songs}}
-      <tr>
-        <td>{{name}}</td>
-        <td>{{artist}}</td>
-        <td>{{album}}</td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
+<div class="user-badge">
+  <div class="user-badge-avatar">
+    <i class='fa fa-music'></i>
+  </div>
+  <div class="login">{{playlist.name}}</div>
+  <div class="heading">
+    <ul>
+      <li>{{creator}}</li>
+      <li>{{timeSince}} ago</li>
+      <li>{{followers.length}} followers</li>
+    </ul>
+  </div>
+  <table>
+    <thead><tr>
+      <td>Name</td>
+      <td>Artist</td>
+      <td>Album</td>
+    </tr></thead>
+    <tbody>
+      {{#each songs}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{artist}}</td>
+          <td>{{album}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <a type="button-cool-search" href="/export/{{spotifyId}}">Export to Spotify</a>
+</div>
