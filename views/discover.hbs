@@ -1,30 +1,21 @@
+<img class="shittyLogo" src="/images/roadtriplogo.png" style="width: 20vw; min-width: 250px"/>
+
+<div class="container-track">
+  <div class="top20">Top 20 Songs</div>
+{{#each tracks}}
 <div class="user-badge">
   <div class="user-badge-avatar">
-    <i class='fa fa-music'></i>
+    <img src="{{picture}}"/>
   </div>
-  <div class="login">Top 20</div>
+  <div class="login">{{playlist.name}}</div>
   <div class="heading">
     <ul>
-      <li>{{creator}}</li>
-      <li>{{timeSince}} ago</li>
-      <li>{{followers.length}} followers</li>
+      <li>{{name}}</li>
+      <li>{{artist}}</li>
     </ul>
   </div>
-  <table>
-    <thead><tr>
-      <td>Name</td>
-      <td>Artist</td>
-      <td>Album</td>
-    </tr></thead>
-    <tbody>
-      {{#each tracks}}
-        <tr>
-          <td>{{name}}</td>
-          <td>{{artist}}</td>
-          <td>{{album}}</td>
-        </tr>
-      {{/each}}
-    </tbody>
   </table>
-  <!-- <a type="button-cool-search" href="/export/{{spotifyId}}">Add to Playlist</a> -->
+  <a type="button-cool-search" href="{{url}}">See more about artist</a>
+</div>
+{{/each}}
 </div>

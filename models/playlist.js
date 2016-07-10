@@ -4,7 +4,8 @@ var mongoose = require('mongoose')
 var songSchema=mongoose.Schema({
 	name:String,
 	artist:String,
-	album: String
+	picture:String,
+	url:String
 })
 
 var playlistSchema = mongoose.Schema({

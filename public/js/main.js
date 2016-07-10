@@ -27,6 +27,7 @@ $(document).ready(function(){
     console.log('ARTISTS:'+ artist1,artist2)
     window.location.href = '/search?artist1='+encodeURIComponent(artist1)+"&artist2="+encodeURIComponent(artist2);
   })
+})
   //
   // $('#findMatches').click(function(){
   //   var artist1 = $('#searchfld1').attr('value');
