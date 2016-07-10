@@ -99,7 +99,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
 passport.use(new FacebookStrategy({
     clientID: variables.FACEBOOK.clientID,
     clientSecret: variables.FACEBOOK.clientSecret,
-    callbackURL: "http://localhost:3000/login/facebook/callback",
+    callbackURL: "https://warm-refuge-54272.herokuapp.com/login/facebook/callback",
     profileFields: ['id','email']
   },
   function(accessToken, refreshToken, profile, done) {
@@ -150,7 +150,7 @@ passport.use(new FacebookStrategy({
 passport.use(new SpotifyStrategy({
     clientID: variables.SPOTIFY.clientId,
     clientSecret: variables.SPOTIFY.clientSecret,
-    callbackURL: "http://localhost:3000/login/spotify/callback"
+    callbackURL: "https://warm-refuge-54272.herokuapp.com/login/spotify/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     //console.log(profile)
