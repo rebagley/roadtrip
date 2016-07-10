@@ -23,6 +23,32 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/discover',function(req,res,next){
+
+    // $.getJSON("http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json", function(data) {
+    //     var html = '';
+    //     $.each(data, function(i, item) {
+    //         // html += "<p>" + item.name + " - " + item.playcount + "</p>";
+    //         console.log(item)
+    //     });
+    //   //  $('#test').append(html);
+         // topArt = data.topartists;
+    //});
+    // $.ajax({
+    // type : 'POST',
+    // url : 'http://ws.audioscrobbler.com/2.0/',
+    // data : 'method=artist.getinfo&' +
+    //        'artist=After+The+Burial&' +
+    //        'api_key=9a09b3b6f2f046ad39b28327bf5477e6&' +
+    //        'format=json',
+    // dataType : 'jsonp',
+    // success : function(data) {
+    //     // Handle success code here
+    //     console.log(data)
+    // },
+    // error : function(code, message){
+    //     // Handle error here
+    // }
+//});
   res.render('discover')
 })
 
