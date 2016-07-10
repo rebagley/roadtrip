@@ -1,17 +1,24 @@
-var spotifyCredentials = require('../variables').SPOTIFY;
+ var spotifyCredentials = require('./variables').SPOTIFY;
 var clientId = spotifyCredentials.clientId;
 var clientSecret = spotifyCredentials.clientSecret;
 
-var doSearch = function(trackName,artistName, callback) {
-		console.log('search for ' + word);
-		var url = 'https://api.spotify.com/v1/search?type=track&limit=50&q=' + encodeURIComponent('track:"'+trackName+'%20artist:'+artistName+'"');
+var SpotifyWebApi = require('spotify-web-api-node');
+//var spotifyCredentials = require('../variables').SPOTIFY;
+
+var spotifyApi = new SpotifyWebApi({
+  clientId : spotifyCredentials.clientId,
+  clientSecret: spotifyCredentials.clientSecret
+});
+
+
+var doSearch = function(artist, callback) {
+		var url = 'https://api.spotify.com/v1/search?type=track&limit=50&q=' + encodeURIComponent('artist:""'+artistName+'"');
 		$.ajax(url, {
 			dataType: 'json',
 			success: function(r) {
 				console.log('got track', r);
 				callback({
-					track: trackName,
-          artist: artistName,
+          artist: artist,
 					tracks: r.tracks.items
 						.map(function(item) {
 							var ret = {
@@ -36,8 +43,7 @@ var doSearch = function(trackName,artistName, callback) {
 			},
 			error: function(r) {
 				callback({
-          track: trackName,
-          artist: artistName,
+          artist: artist,
 					tracks: []
 				});
 			}
@@ -69,3 +75,8 @@ spotifyApi.addTracksToPlaylist('thelinmichael', '5ieJqeLJjjI8iJWaxeBLuK', ["spot
   }, function(err) {
     console.log('Something went wrong!', err);
   });
+
+
+
+
+module.exports=doSearch;

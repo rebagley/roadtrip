@@ -13,6 +13,11 @@ $(document).ready(function(){
   // $('.shittyLogo').animate({opacity: 0}, 1000);
   // $('.shittyLogo:hidden:first').animate({opacity: 1}, 1000);
 
+  $('.btn#findMatches').click(function(){
+    var artist1 = $('#searchfld1').attr('value');
+    var artist2 = $('#searchfld2').attr('value');
+    window.location.href = '/search?artist1='+encodeURIComponent(artist1)+"&artist2="+encodeURIComponent(artist2);
+  })
 
   $(function() {
       var pull = $('#pull');

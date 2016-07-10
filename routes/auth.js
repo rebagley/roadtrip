@@ -83,26 +83,28 @@ module.exports = function(passport) {
   });
 
   // POST Login page
-  router.post('/login', passport.authenticate('local'), function(req, res) {
+  router.post('/login', passport.authenticate('local'),
+    function(req, res) {
 
-    if(req.user.wantsSpotify && !req.user.spotifyId){
-      res.redirect('/login/getSpotify')
-    }
-    else if(req.user.spotifyId){
-      spotifyApi.clientCredentialsGrant()
-      .then(function(data) {
-        console.log('The access token expires in ' + data.body['expires_in']);
-        console.log('The access token is ' + data.body['access_token']);
-        // Save the access token so that it's used in future calls
-        spotifyApi.setAccessToken(data.body['access_token']);
-        req.user.spotifyToken = data.body['access_token'];
+      if(req.user.wantsSpotify && !req.user.spotifyId){
+        res.redirect('/login/getSpotify')
       }
-      , function(err) {
-        console.log('Something went wrong when retrieving an access token', err.message);
-      });
-    }
-    res.redirect('/')
-  });
+      else if(req.user.spotifyId){
+        spotifyApi.clientCredentialsGrant()
+        .then(function(data) {
+          console.log('The access token expires in ' + data.body['expires_in']);
+          console.log('The access token is ' + data.body['access_token']);
+          // Save the access token so that it's used in future calls
+          spotifyApi.setAccessToken(data.body['access_token']);
+          req.user.spotifyToken = data.body['access_token'];
+        }
+        , function(err) {
+          console.log('Something went wrong when retrieving an access token', err.message);
+        });
+      }
+      res.redirect('/')
+  }
+);
 
   router.get('/login/getSpotify',function(req,res){
     res.render('getSpotify')

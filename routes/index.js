@@ -4,6 +4,7 @@ var router = express.Router();
 var User = require('../models/user');
 var Playlist = require('../models/playlist').Playlist;
 var Song = require('../models/playlist').Song;
+var doSearch = require('../spotify')
 
 
 /* GET home page. */
@@ -84,6 +85,40 @@ function timeSince(date) {
     }
     return Math.floor(seconds) + " seconds";
 }
+
+router.get('/search',function(req,res,next){
+  var artist1 = decodeURI(req.query.artist1);
+  var artist2 = decodeURI(req.query.artist2);
+  var artists=function(artist1,artist2){
+    //  RETURN TAYLOR'S FUNCTION
+    return [];
+  }
+  var tracks = [];
+  artists.forEach(function(artist){
+    doSearch(artist,function(data){
+        tracks=tracks.concat(data.tracks)
+    })
+  })
+
+  var tempPlaylist = new Playlist({
+    name: artist1+" and "+artist2,
+    creator: req.user._id,
+    dateCreated: new Date(),
+    followers: [req.user._id],
+    spotifyId: null,
+    songs: tracks
+  });
+  tempPlaylist.save(function(err,playlist){
+    if(err){
+      res.send(err)
+    }
+    else{
+      req.user.update({playlists:req.user.playlists.push(playlist)},function(err){})
+      res.render('playlist',playlist)
+    }
+  })
+})
+
 
 router.get('/export/:id',function(req,res,next){
   spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
