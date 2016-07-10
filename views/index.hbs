@@ -3,14 +3,17 @@
   <div class="heading">Create the perfect playlist for a roadtrip with friends.</div>
   <div class="container-fluid">
     <div class="row">
+      <form action="search">
+
+        <div class='form-group'>
       <div class="col-xs-6">
         <div class="card">
           <div class="card-block">
             <h4 class="card-title">Your Artist</h4>
             <div class='search-bar'>
-              <form action='nothing'>
-                <input type='text' name='search' class='searchfld' id='searchfld1' placeholder="Pick your artist." autofocus/>
-              </form>
+
+                <input type='text' name='artist1' class='searchfld' id='searchfld1' placeholder="Pick your artist." autofocus/>
+
               <div class='artist-list'>
                 <!-- <form action='nothing'>
                   <li>Artist 1</li>
@@ -22,14 +25,16 @@
           </div>
         </div>
       </div>
+    </div>
+      <div class='form-group'>
       <div class="col-xs-6">
         <div class="card">
           <div class="card-block">
             <h4 class="card-title">Their Artist</h4>
             <div class='search-bar'>
-              <form action='nothing'>
-                <input type='text' name='search' class='searchfld' id='searchfld2' placeholder="Pick your artist." autofocus/>
-              </form>
+
+
+                <input type='text' name='artist2' class='searchfld' id='searchfld2' placeholder="Pick your artist." autofocus/>
               <div class='artist-list'>
                 <!-- <form action='nothing'>
                   <li>Artist 1</li>
@@ -43,6 +48,10 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-default" id="findMatches">Search</button>
+</div>
+  <div class="form-group">
+  <button class="button-cool">Search</button>
+</div>
+</form>
 </div>
 </div>
