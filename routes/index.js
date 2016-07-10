@@ -15,6 +15,7 @@ var doSearch = require('../spotify')
 var items =require('../lastfm');
 
 var getRelated=items.getRelated
+console.log(getRelated)
 var id=items.getRelated
 console.log(id)
 
@@ -34,23 +35,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/discover',function(req,res,next){
-// function(){
-//   lfm.chart.getTopTracks( function(err, tracks){
-//     if(err){
-//       console.log(err)
-//     }
-//     else{
-//       console.log(tracks)
-//     }
-//   })
-// }
-// $.ajax({
-//   method: "get",
-//   url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
-//   success: function(data) {
-//     console.log(data.artist.name);
-//   }
-// })
   res.render('discover')
 })
 
@@ -157,19 +141,20 @@ router.get('/search',function(req,res,next){
   })
 })
 
-router.post('/',function(req,res,next){
-  if(id){
-    List.findById(id, function(err,artists){
-      if(err){
-        console.log(err)
-      }
-      else{
-        console.log(artists)
-      }
-    })
-  }
-  res.redirect('/playlist')
-})
+// router.post('/',function(req,res,next){
+//   console.log('post')
+//   if(id){
+//     List.findById(id, function(err,artists){
+//       if(err){
+//         console.log(err)
+//       }
+//       else{
+//         console.log(artists)
+//       }
+//     })
+//   }
+//   res.redirect('/playlist')
+// })
 
 //
 // router.get('/export/:id',function(req,res,next){

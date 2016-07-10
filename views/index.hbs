@@ -3,22 +3,24 @@
   <div class="heading">Create the perfect playlist for a roadtrip with friends.</div>
   <div class="container-fluid">
     <div class="row">
-      <form action="search">
+      <!-- <form action="search"> -->
+
         <div class='form-group'>
       <div class="col-xs-6">
         <div class="card">
           <div class="card-block">
             <h4 class="card-title">Your Artist</h4>
             <div class='search-bar'>
-              <form action='nothing'>
+              <div action='nothing'>
+              <form method="post" action='/'>
                 <input type='text' name='artist1' class='searchfld' id='searchfld1' placeholder="Pick your artist." autofocus/>
-              </form>
+             <!--  </div> -->
               <div class='artist-list'>
-                <form action='nothing'>
-               <!--    <li>Artist 1</li>
+             <!--    <form action='nothing'>
+                  <li>Artist 1</li>
                   <li>Artist 2</li>
-                  <li>Artist 3</li> -->
-                </form>
+                  <li>Artist 3</li>
+                </form> -->
                 <!-- <form action='nothing'>
                   <li>Artist 1</li>
                   <li>Artist 2</li>
@@ -36,14 +38,15 @@
           <div class="card-block">
             <h4 class="card-title">Their Artist</h4>
             <div class='search-bar'>
-
+             <!--  <form action='nothing'> -->
                 <input type='text' name='artist2' class='searchfld' id='searchfld2' placeholder="Pick your artist." autofocus/>
+             <!--  </form> -->
               <div class='artist-list'>
-                <form action='nothing'>
-                  <!-- <li>Artist 1</li>
+              <!--   <form action='nothing'>
+                  <li>Artist 1</li>
                   <li>Artist 2</li>
-                  <li>Artist 3</li> -->
-                </form>
+                  <li>Artist 3</li>
+                </form> -->
                 <!-- <form action='nothing'>
                   <li>Artist 1</li>
                   <li>Artist 2</li>
@@ -56,10 +59,8 @@
       </div>
     </div>
   </div>
-</div>
-  <div class="form-group">
-  <button class="button-cool-search">Search</button>
-</div>
-</form>
+  <!-- <form method="post" action='/'> -->
+  <button class="btn btn-default" id="findMatches">Search</button>
+  </form>
 </div>
 </div>
