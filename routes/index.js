@@ -240,6 +240,7 @@ var makeNewPlaylist = function(req,res){
     }
     else{
     Playlist.findById(tempPlaylist._id,function(err,playlist){
+      console.log('reached')
       getRelated(artist1,artist2,5,playlist._id);
     }).exec(function(err,playlist){
       if(err){

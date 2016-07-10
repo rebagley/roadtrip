@@ -160,11 +160,11 @@ var getRelated= function(a1,a2,n,playlist){
 													}
 													else{
 														//console.log('152')
-														for(var m=0; m<same.length && m<20; m++){
+														for(var m=0; m<artists.length && m<20; m++){
 															//console.log('m')
 															getArtists(same[m],id)
 														}
-														if(m==same.length||m==20){
+														if(m==artists.length||m==20){
 															return id;
 														}
 													}

@@ -317,9 +317,9 @@
 293 info package.json spotify-web-api-node@2.3.2 No README data
 294 info package.json string_decoder@0.10.31 string_decoder is also the name of a node core module.
 295 info package.json uglify-js@2.4.24 license should be a valid SPDX license expression
-296 info package.json uid2@0.0.3 No repository field.
-297 info package.json uid2@0.0.3 No license field.
-298 info package.json undefsafe@0.0.3 license should be a valid SPDX license expression
+296 info package.json undefsafe@0.0.3 license should be a valid SPDX license expression
+297 info package.json uid2@0.0.3 No repository field.
+298 info package.json uid2@0.0.3 No license field.
 299 info package.json underscore@1.6.0 No license field.
 300 info package.json util@0.10.3 util is also the name of a node core module.
 301 info package.json utils-merge@1.0.0 No license field.
@@ -610,26 +610,26 @@
 586 verbose targetResolver reading package data from C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip\node_modules\.bin\touch\package.json
 587 verbose targetResolver reading package data from C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip\node_modules\.bin\uglifyjs\package.json
 588 verbose targetResolver reading package data from C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip\node_modules\.bin\uglifyjs.cmd\package.json
-589 verbose already installed skipping cookie-parser@~1.4.3 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-590 verbose already installed skipping debug@~2.2.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-591 verbose already installed skipping express@^4.13.4 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-592 verbose already installed skipping express-session@^1.14.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-593 verbose already installed skipping hbs@^4.0.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-594 verbose already installed skipping jquery@^3.1.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-595 verbose already installed skipping lastfm@^0.9.2 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-596 verbose already installed skipping less@^2.7.1 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-597 verbose already installed skipping mongoose@^4.5.3 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-598 verbose already installed skipping morgan@~1.7.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-599 verbose already installed skipping nodemon@^1.9.2 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-600 verbose already installed skipping passport@^0.3.2 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-601 verbose already installed skipping passport-facebook@^2.1.1 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-602 verbose already installed skipping passport-local@^1.0.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-603 verbose already installed skipping passport-spotify@^0.3.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-604 verbose already installed skipping passport-strategy@^1.0.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-605 verbose already installed skipping serve-favicon@~2.3.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-606 verbose already installed skipping underscore-node@^0.1.2 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-607 verbose already installed skipping body-parser@~1.15.1 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
-608 verbose already installed skipping connect-mongo@^1.2.1 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+589 verbose already installed skipping body-parser@~1.15.1 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+590 verbose already installed skipping connect-mongo@^1.2.1 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+591 verbose already installed skipping cookie-parser@~1.4.3 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+592 verbose already installed skipping debug@~2.2.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+593 verbose already installed skipping express@^4.13.4 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+594 verbose already installed skipping express-session@^1.14.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+595 verbose already installed skipping hbs@^4.0.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+596 verbose already installed skipping jquery@^3.1.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+597 verbose already installed skipping lastfm@^0.9.2 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+598 verbose already installed skipping less@^2.7.1 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+599 verbose already installed skipping mongoose@^4.5.3 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+600 verbose already installed skipping morgan@~1.7.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+601 verbose already installed skipping nodemon@^1.9.2 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+602 verbose already installed skipping passport@^0.3.2 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+603 verbose already installed skipping passport-facebook@^2.1.1 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+604 verbose already installed skipping passport-local@^1.0.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+605 verbose already installed skipping passport-spotify@^0.3.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+606 verbose already installed skipping passport-strategy@^1.0.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+607 verbose already installed skipping serve-favicon@~2.3.0 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
+608 verbose already installed skipping underscore-node@^0.1.2 C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
 609 silly install resolved []
 610 info build C:\Users\tayco\OneDrive\Documents\GitHub\roadtrip
 611 info linkStuff code2@0.0.0
