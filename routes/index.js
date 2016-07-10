@@ -14,7 +14,7 @@ var lfm = new LastfmAPI({
 var User = require('../models/user');
 var Playlist = require('../models/playlist').Playlist;
 var Song = require('../models/playlist').Song;
-var List = require('../models/artist')
+var Artist = require('../models/artist')
 var doSearch = require('../spotify')
 var getRelated =require('../lastfm').function;
 // var id=require('../lastfm').id
@@ -229,10 +229,22 @@ router.get('/search',function(req,res,next){
 
 router.get('/results/playlist/:id',function(req,res,next){
   Playlist.findById(req.params.id,function(err,playlist){
+    console.log(playlist)
     if(err){
       res.send(err)
     }
+    else if(!playlist){
+      makeNewPlaylist(req,res);
+    }
     else{
+      if(!playlist.artists || typeof(playlist.artists[0])=='string'){
+        playlist.artists = convertArtists(playlist.artists);
+        playlist.save(function(err,playlist){
+          if(err){
+            res.send(err)
+          }
+        })
+      }
       res.render('index',{artist:playlist.artists})
     }
   })
@@ -268,11 +280,8 @@ var makeNewPlaylist = function(req,res){
         var artists = playlist.artists;
 
         var tracks = [];
-        artists.forEach(function(artist){
-          doSearch(artist,function(data){
-              tracks=tracks.concat(data.tracks)
-          })
-        })
+        playlist.artists = convertArtists(artists);
+
           tempPlaylist.save(function(err,playlist){
           if(err){
             res.send(err)
@@ -287,6 +296,30 @@ var makeNewPlaylist = function(req,res){
   })
   }
   })}
+
+var convertArtists = function(artists){
+  var arr = [];
+  artists.forEach(function(artist){
+    lfm.artist.getInfo({artist:artist,autocorrect:1},function(err,artist){
+      // artist = artist.artist;
+      var newArtist = new Artist({
+        name:artist.name,
+        picture: artist.image[3]['#text'],
+        url:artist.url
+      })
+      newArtist.save(function(err,artist){
+        if(err){
+          res.send(err)
+        }
+        else{
+          arr.push(artist)
+        }
+      })
+    })
+  })
+  console.log(arr)
+  return arr;
+}
 
 
 
