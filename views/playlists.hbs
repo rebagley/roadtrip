@@ -1,0 +1,22 @@
+<h1>My Playlists</h1>
+
+<table>
+  <thead><tr>
+    <td>Name</td>
+    <td>Creator</td>
+    <td>Date Created</td>
+  </tr></thead>
+  <tbody>
+    {{#each playlists}}
+      <tr>
+        <td>
+          <a href="playlist/{{spotifyId}}">
+            {{name}}
+          </a>
+        </td>
+        <td>{{creator}}</td>
+        <td>{{dateCreate}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
