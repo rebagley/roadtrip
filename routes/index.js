@@ -133,6 +133,7 @@ router.get('/search',function(req,res,next){
     res.redirect('/')
   })
 
+
   var tempPlaylist = new Playlist({
     name: artist1+" and "+artist2,
     creator: req.user._id,
