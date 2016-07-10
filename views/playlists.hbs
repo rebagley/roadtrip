@@ -1,22 +1,26 @@
-<h1>My Playlists</h1>
-
-<table>
-  <thead><tr>
-    <td>Name</td>
-    <td>Creator</td>
-    <td>Date Created</td>
-  </tr></thead>
-  <tbody>
-    {{#each playlists}}
-      <tr>
-        <td>
-          <a href="playlist/{{spotifyId}}">
-            {{name}}
-          </a>
-        </td>
-        <td>{{creator}}</td>
-        <td>{{dateCreate}}</td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
+<div class="user-badge">
+  <div class="user-badge-avatar">
+    <i class='fa fa-music' style="font-size: 100px; padding: 20px"></i>
+  </div>
+  <div class="login">My Playlists</div>
+  <table>
+    <thead><tr>
+      <td>Name</td>
+      <td>Creator</td>
+      <td>Date Created</td>
+    </tr></thead>
+    <tbody>
+      {{#each playlists}}
+        <tr>
+          <td>
+            <a href="playlist/{{spotifyId}}">
+              {{name}}
+            </a>
+          </td>
+          <td>{{creator}}</td>
+          <td>{{dateCreate}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

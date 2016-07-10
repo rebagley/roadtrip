@@ -113,7 +113,11 @@ function timeSince(date) {
 router.get('/search',function(req,res,next){
   var artist1 = decodeURI(req.query.artist1);
   var artist2 = decodeURI(req.query.artist2);
-  var tempObj= getRelated(artist1,artist2,20);
+  var tempObj= null;
+  getRelated(artist1,artist2,5,function(list){
+    tempObj=list
+  });
+  console.log(tempObj)
   var artists = tempObj.artists;
 
   var tracks = [];
@@ -148,23 +152,27 @@ router.get('/search',function(req,res,next){
   })
 })
 
-
-router.get('/export/:id',function(req,res,next){
-  spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
-  .then(function(data) {
-    console.log('Created playlist!');
-  }, function(err) {
-    console.log('Something went wrong!', err);
-  });
-
-// Add tracks to a playlist
-spotifyApi.addTracksToPlaylist('thelinmichael', '5ieJqeLJjjI8iJWaxeBLuK', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"])
-  .then(function(data) {
-    console.log('Added tracks to playlist!');
-  }, function(err) {
-    console.log('Something went wrong!', err);
-  });
+router.post('/',function(req,res,next){
+  res.redirect('/playlist')
 })
+
+//
+// router.get('/export/:id',function(req,res,next){
+//   spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
+//   .then(function(data) {
+//     console.log('Created playlist!');
+//   }, function(err) {
+//     console.log('Something went wrong!', err);
+//   });
+//
+// // Add tracks to a playlist
+// spotifyApi.addTracksToPlaylist('thelinmichael', '5ieJqeLJjjI8iJWaxeBLuK', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"])
+//   .then(function(data) {
+//     console.log('Added tracks to playlist!');
+//   }, function(err) {
+//     console.log('Something went wrong!', err);
+//   });
+// })
 
 
 

@@ -29,7 +29,7 @@ var lfm = new LastfmAPI({
 
 var out=[]
 var db=[]
-var getArtists=function(artist){
+var getArtists=function(artist,callback){
 	var s=0;
 	lfm.artist.getSimilar({
 		'artist': artist,
@@ -43,13 +43,17 @@ var getArtists=function(artist){
 					out.push(a.name)
 				}
 				if(_.intersection(out,a.name)&&_.indexOf(db,a.name)===-1 ){
-					console.log("Saving", a.name)
+					console.log( a.name)
 					db.push(a.name)
 					List.findByIdAndUpdate(id,{
 						$push: {artists: a.name},
-					}, function(err) {
-						if (err)
+					}, function(err,list) {
+						if (err){
 							console.error("Error saving Artist:", err);
+						}
+						else{
+							callback(list)
+						}
 						// else
 						// 	console.log("Successfully saved")
 					})
@@ -66,23 +70,23 @@ var getArtists=function(artist){
 }
 
 
-var getRelated= function(a1,a2,n){
+var getRelated= function(a1,a2,n,callback){
+	console.log(callback)
 var artist1= {};
 var artist2={};
 lfm.artist.getSimilar({
-	'artist' : a1,
-	'limit': 50
-	}, function (err, track) {
+	'artist' : a1
+}, function (err, track,callback) {
 		if (err) { throw err; }
 		else{
 			var count1=0;
-				track.artist.map(function(a){
+				track.artist.map(function(a,callback){
 				lfm.artist.getTopTags({
 					'artist' : a.name
 				}, function (err, tag) {
 					//console.log(tag)
 					var tags=[];
-					tag.tag.map(function(data){
+					tag.tag.map(function(data,callback){
 					if(tags.length<10){
 
 						tags.push(data.name)
@@ -92,16 +96,15 @@ lfm.artist.getSimilar({
 					artist1[a.name] = tags
 					//console.log(i)
 					///after all data from artist 1 is collected sift through data 2
-					if (count1 === 49) {
+					if (count1 === 99) {
 						//console.log('pass')
 						lfm.artist.getSimilar({
-							'artist' : a2,
-							'limit': 50
-							}, function (err, track) {
+							'artist' : a2
+						}, function (err, track,callback) {
 								if (err) { throw err; }
 								else{
 									var count2=0
-										track.artist.map(function(a, i){
+										track.artist.map(function(a, i,callback){
 										lfm.artist.getTopTags({
 											'artist' : a.name
 										}, function (err, tag) {
@@ -114,7 +117,7 @@ lfm.artist.getSimilar({
 											});
 											artist2[a.name] = tags
 											// console.log("i is", i, ", track.artist.length is", track.artist.length)
-											if (count2===49) {
+											if (count2===99) {
 												//look for exact matches
 												var artists=[];
 												for(var key1 in artist1){
@@ -146,7 +149,7 @@ lfm.artist.getSimilar({
 													// 	console.log(Object.keys(artist2)[0])
 													// if(times<3){
 														n--
-														getRelated(Object.keys(artist1)[20],Object.keys(artist2)[20],n)
+														getRelated(Object.keys(artist1)[20],Object.keys(artist2)[20],n,callback)
 														// times++
 													// }
 													// else{
@@ -156,14 +159,16 @@ lfm.artist.getSimilar({
 													}
 													for(var m=0; m<artists.length && m<20; m++){
 														//console.log('m')
-														getArtists(artists[m])
+														console.log(typeof(callback))
+														getArtists(artists[m],callback)
 													}
 												}
 												else{
 													//console.log('152')
 													for(var m=0; m<same.length && m<20; m++){
 														//console.log('m')
-														getArtists(same[m])
+														console.log(typeof(callback))
+														getArtists(same[m],callback)
 													}
 												}
 											}
@@ -180,6 +185,7 @@ lfm.artist.getSimilar({
 		}
 	}
 );
+return id;
 }
 
 module.exports=getRelated;
