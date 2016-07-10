@@ -8,9 +8,11 @@ $(document).ready(function(){
   })
 
   $('.heading').addClass('animated bounceIn');
+  // $('button').addClass('animated pulse')
   // $('.shittyLogo').addClass('animated bounceIn');
   // $('.shittyLogo').animate({opacity: 0}, 1000);
   // $('.shittyLogo:hidden:first').animate({opacity: 1}, 1000);
+
 
   $(function() {
       var pull = $('#pull');

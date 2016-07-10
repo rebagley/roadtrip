@@ -12,17 +12,19 @@
   <div class="container-fluid">
     <div class="row">
       <form method="POST" class="form-horizontal">
-      <h3>Login</h3>
+        <div class="login">Login</div>
         <div class="form-group">
             <input type="text" name="username" class="form-control" placeholder="Username">
         </div>
         <div class="form-group">
             <input type="password" name="password" class="form-control" id="password" placeholder="Password">
         </div>
-        <div class="form-group">
-          <button class="btn btn-success">Login</button>
-          <a class="btn btn-primary" href="/register">Register</a>
-          <a class="btn btn-primary" href="/login/facebook">Login with Facebook</a>
+        <div class="form-group" id="homeButtons">
+          <button class="button-cool">Login</button>
+          <div class="twoButtons">
+            <button class="button-register" href="/register">Register</a>
+            <button class="button-facebook" href="/login/facebook">Login with Facebook</a>
+          </div>
         </div>
       </form>
     </div>
