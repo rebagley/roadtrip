@@ -11,8 +11,9 @@ var User = require('../models/user');
 var Playlist = require('../models/playlist').Playlist;
 var Song = require('../models/playlist').Song;
 var doSearch = require('../spotify')
-var getRelated =require('../lastfm');
+var items =require('../lastfm');
 
+var getRelated=items.getRelated
 
 /* GET home page. */
 router.use(function(req,res,next){
