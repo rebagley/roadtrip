@@ -509,11 +509,11 @@ html {
   text-rendering: optimizelegibility;
 }
 
-.user-badge {
+.user-badge, .user-badge-pro {
   top: 203px;
   left: 150px;
-  display: inline-block;
-  position: relative;
+  /*display: inline-block;*/
+  /*position: relative;*/
   background-color: #394165;
   border-radius: 8px;
   /* position: absolute; */
@@ -525,6 +525,17 @@ html {
   overflow: hidden;
   vertical-align: baseline;
   animation: start 500ms 500ms ease-out forwards;
+}
+
+.user-badge{
+  display: inline-block;
+  position: relative;
+}
+.user-badge-pro{
+  position: absolute;
+  transform: translate(-50%, -50%) translateZ(0px) scaleY(0.2) scaleX(0.4) skew(20deg, 10deg);
+  top: 50%;
+  left: 50%;
 }
 
 @keyframes start {
