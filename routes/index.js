@@ -245,7 +245,6 @@ var makeNewPlaylist = function(req,res){
       else{
         var artists = playlist.artists;
 
-<<<<<<< HEAD
         var tracks = [];
         artists.forEach(function(artist){
           doSearch(artist,function(data){
@@ -268,8 +267,7 @@ var makeNewPlaylist = function(req,res){
   })}
 
 
-=======
->>>>>>> cee0efa232ba55623e728894295cdbe90001582a
+
 // //
 router.get('/export/:id',function(req,res,next){
   Playlist.findById(req.params.id, function(err,data){
