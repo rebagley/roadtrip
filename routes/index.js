@@ -5,6 +5,7 @@ var User = require('../models/user');
 var Playlist = require('../models/playlist').Playlist;
 var Song = require('../models/playlist').Song;
 var doSearch = require('../spotify')
+var getRelated =require('../lastfm');
 
 
 /* GET home page. */
@@ -89,10 +90,9 @@ function timeSince(date) {
 router.get('/search',function(req,res,next){
   var artist1 = decodeURI(req.query.artist1);
   var artist2 = decodeURI(req.query.artist2);
-  var artists=function(artist1,artist2){
-    //  RETURN TAYLOR'S FUNCTION
-    return [];
-  }
+  var tempObj= getRelated(artist1,artist2,20);
+  var artists = tempObj.artists;
+
   var tracks = [];
   artists.forEach(function(artist){
     doSearch(artist,function(data){
