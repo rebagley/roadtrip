@@ -1,10 +1,17 @@
 var express = require('express');
 var router = express.Router();
+var LastfmAPI = require('lastfmapi');
+
+var lfm = new LastfmAPI({
+  'api_key' : variables.LASTFM.api_key,
+  'secret' : variables.LASTFM.secret
+});
 
 var User = require('../models/user');
 var Playlist = require('../models/playlist').Playlist;
 var Song = require('../models/playlist').Song;
 var doSearch = require('../spotify')
+var getRelated =require('../lastfm');
 
 
 /* GET home page. */
@@ -13,7 +20,7 @@ router.use(function(req,res,next){
     res.redirect('/login')
   }
   else{
-    console.log(req.user)
+    //console.log(req.user)
     next();
   }
 })
@@ -23,32 +30,23 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/discover',function(req,res,next){
-
-    // $.getJSON("http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json", function(data) {
-    //     var html = '';
-    //     $.each(data, function(i, item) {
-    //         // html += "<p>" + item.name + " - " + item.playcount + "</p>";
-    //         console.log(item)
-    //     });
-    //   //  $('#test').append(html);
-         // topArt = data.topartists;
-    //});
-    // $.ajax({
-    // type : 'POST',
-    // url : 'http://ws.audioscrobbler.com/2.0/',
-    // data : 'method=artist.getinfo&' +
-    //        'artist=After+The+Burial&' +
-    //        'api_key=9a09b3b6f2f046ad39b28327bf5477e6&' +
-    //        'format=json',
-    // dataType : 'jsonp',
-    // success : function(data) {
-    //     // Handle success code here
-    //     console.log(data)
-    // },
-    // error : function(code, message){
-    //     // Handle error here
-    // }
-//});
+function(){
+  lfm.chart.getTopTracks( function(err, tracks){
+    if(err){
+      console.log(err)
+    }
+    else{
+      console.log(tracks)
+    }
+  })
+}
+// $.ajax({
+//   method: "get",
+//   url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
+//   success: function(data) {
+//     console.log(data.artist.name);
+//   }
+// })
   res.render('discover')
 })
 
@@ -115,15 +113,20 @@ function timeSince(date) {
 router.get('/search',function(req,res,next){
   var artist1 = decodeURI(req.query.artist1);
   var artist2 = decodeURI(req.query.artist2);
-  var artists=function(artist1,artist2){
-    //  RETURN TAYLOR'S FUNCTION
-    return [];
-  }
+  var tempObj= getRelated(artist1,artist2,20);
+  var artists = tempObj.artists;
+
   var tracks = [];
   artists.forEach(function(artist){
     doSearch(artist,function(data){
         tracks=tracks.concat(data.tracks)
     })
+  })
+
+  router.post('/', function(req,res){
+    console.log(req.body.artist1)
+    console.log(req.body.artist2)
+    res.redirect('/')
   })
 
   var tempPlaylist = new Playlist({

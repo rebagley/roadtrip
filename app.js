@@ -81,7 +81,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
       }
       // if no user present, auth failed
       if (!user) {
-        console.log(user);
+        //console.log(user);
         return done(null, false, { message: 'Incorrect username.' });
       }
       // if passwords do not match, auth failed
@@ -103,10 +103,10 @@ passport.use(new FacebookStrategy({
     profileFields: ['id','email']
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile)
+   // console.log(profile)
     User.findOne({$or:[{facebookId: profile.id},{email:profile.emails[0].value}] }, function (err, user) {
       // if there's an error, finish trying to authenticate (auth failed)
-      console.log(profile.emails[0].value)
+      //console.log(profile.emails[0].value)
 
       if (err) {
         console.error(err);
@@ -131,7 +131,7 @@ passport.use(new FacebookStrategy({
       }
       else if(!user.facebookId){
         user.facebookId = profile.id
-        console.log("facebook id added")
+        //console.log("facebook id added")
         user.save(function(err){
           if(err){done(err)}
         })
@@ -139,7 +139,7 @@ passport.use(new FacebookStrategy({
       }
       // auth has has succeeded
       else{
-        console.log("success")
+        //console.log("success")
         return done(null, user);
       }
     });
@@ -153,9 +153,9 @@ passport.use(new SpotifyStrategy({
     callbackURL: "http://localhost:3000/login/spotify/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile)
+    //console.log(profile)
     User.findOne({email:profile.emails[0].value},function(err,user){
-      console.log(user.email)
+      //console.log(user.email)
       if(err){
         return done(err)
       }
@@ -165,8 +165,8 @@ passport.use(new SpotifyStrategy({
       else{
         spotifyApi.clientCredentialsGrant()
         .then(function(data) {
-          console.log('The access token expires in ' + data.body['expires_in']);
-          console.log('The access token is ' + data.body['access_token']);
+          //console.log('The access token expires in ' + data.body['expires_in']);
+          //console.log('The access token is ' + data.body['access_token']);
 
           // Save the access token so that it's used in future calls
           spotifyApi.setAccessToken(data.body['access_token']);

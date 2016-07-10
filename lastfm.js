@@ -5,9 +5,8 @@ var _ = require('underscore-node');
 var $ = require("jquery")
 var mongoose = require('mongoose');
 var variables = require('./variables')
-mongoose.connect(variables.MONGODB_URI)
 
-var List=require('../models/artist')
+var List=require('./models/artist')
 
 var id=""
 var mod= new List({});
@@ -183,4 +182,4 @@ lfm.artist.getSimilar({
 );
 }
 
-getRelated('Metallica','Taylor Swift',6)
+module.exports=getRelated;
