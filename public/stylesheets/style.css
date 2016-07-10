@@ -352,6 +352,7 @@ a:hover{
   width:100%; height:auto;
   background-color:#ecf0f1;
   overflow:hidden;
+  margin-bottom: 10px;
   box-shadow:0 0 5px rgba(0,0,0,0.3);
 }
 
