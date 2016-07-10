@@ -188,4 +188,4 @@ lfm.artist.getSimilar({
 return id;
 }
 
-module.exports=getRelated;
+module.exports={getRelated: getRelated, id: id};

@@ -17,8 +17,6 @@ $(document).ready(function(){
   // $('.shittyLogo').addClass('animated bounceIn');
   // $('.shittyLogo').animate({opacity: 0}, 1000);
   // $('.shittyLogo:hidden:first').animate({opacity: 1}, 1000);
-<<<<<<< HEAD
-  
 
   $('.btn#findMatches').click(function(){
   $('#findMatches').click(function(){
@@ -29,7 +27,6 @@ $(document).ready(function(){
     console.log('ARTISTS:'+ artist1,artist2)
     window.location.href = '/search?artist1='+encodeURIComponent(artist1)+"&artist2="+encodeURIComponent(artist2);
   })
-=======
   //
   // $('#findMatches').click(function(){
   //   var artist1 = $('#searchfld1').attr('value');
@@ -37,7 +34,6 @@ $(document).ready(function(){
   //   console.log('ARTISTS:'+ artist1,artist2)
   //   window.location.href = '/search?artist1='+encodeURIComponent(artist1)+"&artist2="+encodeURIComponent(artist2);
   // })
->>>>>>> 453ef497c06a22ae0d51f741f0964c43e061fb37
 
   $(function() {
       var pull = $('#pull');
