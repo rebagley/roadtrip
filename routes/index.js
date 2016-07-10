@@ -39,13 +39,14 @@ router.get('/discover',function(req,res,next){
       console.log(tracks)
     }
   })
-// $.ajax({
-//   method: "get",
-//   url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
-//   success: function(data) {
-//     console.log(data.artist.name);
-//   }
-// })
+$.ajax({
+  method: "get",
+  url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
+  success: function(data) {
+    console.log(data);
+    track.map()
+  }
+})
   res.render('discover')
 })
 
