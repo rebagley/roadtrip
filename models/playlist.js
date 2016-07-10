@@ -20,7 +20,10 @@ var playlistSchema = mongoose.Schema({
 		ref: 'User'
 	}],
 	spotifyId:String,
-	songs:Array
+	songs:Array,
+	artists:Array,
+	artist1:String,
+	artist2:String
 })
 
 

@@ -13,12 +13,12 @@ var Playlist = require('../models/playlist').Playlist;
 var Song = require('../models/playlist').Song;
 var List = require('../models/artist')
 var doSearch = require('../spotify')
-var items =require('../lastfm');
+var getRelated =require('../lastfm');
 
-var getRelated=items.getRelated
-console.log(getRelated)
-var id=items.getRelated
-console.log(id)
+// var getRelated=items.getRelated
+// console.log(getRelated)
+// var id=items.getRelated
+// console.log(id)
 
 /* GET home page. */
 router.use(function(req,res,next){
@@ -36,61 +36,70 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/discover',function(req,res,next){
-  lfm.chart.getTopTracks(function(err, tracks){
+  Playlist.findOne({name:'top40'},function(err,playlist){
     if(err){
-      console.log(err)
+      res.send(err)
+    }
+    else if(playlist){
+      console.log("already exists",playlist)
+      res.render('discover',{tracks:playlist.songs})
     }
     else{
-      var tracks = tracks.track;
-      console.log(tracks)
-      var trackArr = [];
-      tracks.map(function(track){
-        // console.log("NEW ONE", track)
-        console.log(track.image[0])
-        var song = new Song({
-          name: track.name,
-          artist: track.artist.name,
-          url: track.url,
-          picture: track.image[3]['#text']
-        })
-        //console.log(song)
-        // console.log("SONG",song)
-        song.save(function(err,song){
-          if(err){
-            res.send(err)
-          }
-          else{
-            // console.log("SAVED SONG", song,trackArr)
-            trackArr.push(song)
-
-            if (trackArr.length==20){
-              makePlaylist(trackArr);
-            }
-          }
-        })
+      var top40 = new Playlist({
+        name: 'top40',
+        creator: null,
+        dateCreated: new Date(),
+        songs:null
       })
+      lfm.chart.getTopTracks(function(err, tracks){
+        if(err){
+          console.log(err)
+        }
+        else{
+          var tracks = tracks.track;
+          var trackArr = [];
+          tracks.map(function(track){
+            // console.log("NEW ONE", track)
+            var song = new Song({
+              name: track.name,
+              artist: track.artist.name,
+              url: track.url,
+              picture: track.image[3]['#text']
+            })
+            //console.log(song)
+            // console.log("SONG",song)
+            song.save(function(err,song){
+              if(err){
+                res.send(err)
+              }
+              else{
+                // console.log("SAVED SONG", song,trackArr)
+                trackArr.push(song)
+
+                if (trackArr.length==20){
+                  console.log(trackArr)
+                  top40.songs=trackArr;
+                  top40.save(function(err,playlist){
+                    if(err){
+                      res.send(err)
+                    }
+                    else{
+                      res.render('discover',{tracks:playlist.songs})
+                    }
+                  })
+                }
+              }
+            })
+          })
+    }
+  })
+
       //console.log("ARRAY",trackArr)
 
     }
   })
 
-var makePlaylist = function(trackArr)
-{var top40 = new Playlist({
-  name: 'top40',
-  creator: null,
-  dateCreated: new Date(),
-  songs:trackArr
-})
-top40.save(function(err,playlist){
-  if(err){
-    res.send(err)
-  }
-  else{
-    console.log("LOOK HERE", playlist);
-    res.render('discover',{tracks:playlist.songs})
-  }
-})
-}
+
 // $.ajax({
 //   method: "get",
 //   url: 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Cher&api_key=9a09b3b6f2f046ad39b28327bf5477e6&format=json',
@@ -196,115 +205,78 @@ router.post('/', function(req,res){
   res.redirect('/search?artist1='+encodeURIComponent(req.body.artist1)+'&artist2='+encodeURIComponent(req.body.artist2))
 })
 
-var cbfunc = function(fun,cb){
-  return cb(fun);
-}
 
 
 router.get('/search',function(req,res,next){
   var artist1 = decodeURI(req.query.artist1);
   var artist2 = decodeURI(req.query.artist2);
-  var tempObj= null;
-
-  cbfunc(getRelated(artist1,artist2,5),function(id){
-    console.log("done",id)
-
+  Playlist.findOne({$or:[{artist1:artist1,artist2:artist2},{artist1:artist2,artist2:artist1}]},function(err,playlist){
+    if(err){
+      res.send(err)
+    }
+    else if(playlist){
+      res.redirect('/playlist/'+playlist._id)
+    }
+    else{
+      makeNewPlaylist(req,res,function(err,playlist){
+        if(err){
+          res.send(err)
+        }
+      })
+    }
   })
 
-  console.log(tempObj)
-  var artists = tempObj.artists;
+});
 
-  var tracks = [];
-  artists.forEach(function(artist){
-    doSearch(artist,function(data){
-        tracks=tracks.concat(data.tracks)
-    })
-  })
-
-
-
+var makeNewPlaylist = function(req,res){
+  var artist1 = decodeURI(req.query.artist1);
+  var artist2 = decodeURI(req.query.artist2);
   var tempPlaylist = new Playlist({
     name: artist1+" and "+artist2,
     creator: req.user._id,
     dateCreated: new Date(),
     followers: [req.user._id],
     spotifyId: null,
-    songs: tracks
+    songs: [],
+    artists:[],
+    artist1:artist1,
+    artist2:artist2
   });
   tempPlaylist.save(function(err,playlist){
     if(err){
       res.send(err)
     }
     else{
-      req.user.update({playlists:req.user.playlists.push(playlist)},function(err){})
-      res.render('playlist',playlist)
-    }
+    Playlist.findById(tempPlaylist._id,function(err,playlist){
+      getRelated(artist1,artist2,5,playlist._id);
+    }).exec(function(err,playlist){
+      if(err){
+        res.send(err);
+      }
+      else{
+        var artists = playlist.artists;
+
+        var tracks = [];
+        artists.forEach(function(artist){
+          doSearch(artist,function(data){
+              tracks=tracks.concat(data.tracks)
+          })
+        })
+          tempPlaylist.save(function(err,playlist){
+          if(err){
+            res.send(err)
+          }
+          else{
+            req.user.update({playlists:req.user.playlists.push(playlist)},function(err){})
+            res.redirect('/playlist/'+playlist._id)
+          }
+        })
+
+      }
   })
+  }
+  })}
 
-});
-
-// router.post('/',function(req,res,next){
-//   console.log('post')
-//   if(id){
-//     List.findById(id, function(err,artists){
-//       if(err){
-//         console.log(err)
-//       }
-//       else{
-//         console.log(artists)
-//       }
-//     })
-//   }
-//   res.redirect('/playlist')
-// })
-
-// router.get('/search',function(req,res,next){
-//   var artist1 = decodeURI(req.query.artist1);
-//   var artist2 = decodeURI(req.query.artist2);
-//   var tempObj= null;
-//   getRelated(artist1,artist2,5,function(list){
-//     tempObj=list
-//   });
-//   console.log(tempObj)
-//   var artists = tempObj.artists;
-//
-//   var tracks = [];
-//   artists.forEach(function(artist){
-//     doSearch(artist,function(data){
-//         tracks=tracks.concat(data.tracks)
-//     })
-//   })
-//
-// router.post('/', function(req,res){
-//   console.log(req.body.artist1)
-//   console.log(req.body.artist2)
-//   res.redirect('/')
-//
-//
-//
-//   var tempPlaylist = new Playlist({
-//     name: artist1+" and "+artist2,
-//     creator: req.user._id,
-//     dateCreated: new Date(),
-//     followers: [req.user._id],
-//     spotifyId: null,
-//     songs: tracks
-//   });
-//   tempPlaylist.save(function(err,playlist){
-//     if(err){
-//       res.send(err)
-//     }
-//     else{
-//       req.user.update({playlists:req.user.playlists.push(playlist)},function(err){})
-//       res.render('playlist',playlist)
-//     }
-//   })
-// });
-
-//
-// router.post('/',function(req,res,next){
-//   res.redirect('/playlist')
-// })
 
 // //
 // router.get('/export/:id',function(req,res,next){
