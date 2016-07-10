@@ -76,7 +76,7 @@ var doLogin = function(callback, playlist) {
   }, function(err) {
     console.log('Something went wrong!', err);
   })
-  } 
+  }
 
 // Add tracks to a playlist
 spotifyApi.addTracksToPlaylist('thelinmichael', '5ieJqeLJjjI8iJWaxeBLuK', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"])

@@ -155,7 +155,14 @@ router.get("/playlist/:id",function(req,res){
       res.send(err)
     }
     else{
-      res.render('playlist',{playlist:playlist,timeSince:timeSince(playlist.dateCreated)});
+      User.findById(playlist.creator,function(err,user){
+        if(err){
+          res.send(err)
+        }
+        else{
+          res.render('playlist',{playlist:playlist,timeSince:timeSince(playlist.dateCreated),creator:user.username});
+        }
+      })
     }
   })
 })
@@ -204,7 +211,7 @@ router.get('/search',function(req,res,next){
       res.send(err)
     }
     else if(playlist){
-      res.redirect('/playlist/'+playlist._id)
+      res.redirect('/results/playlist/'+playlist._id)
     }
     else{
       makeNewPlaylist(req,res,function(err,playlist){
@@ -216,6 +223,17 @@ router.get('/search',function(req,res,next){
   })
 
 });
+
+router.get('/results/playlist/:id',function(req,res,next){
+  Playlist.findById(req.params.id,function(err,playlist){
+    if(err){
+      res.send(err)
+    }
+    else{
+      res.render('index',{artist:playlist.artists})
+    }
+  })
+})
 
 var makeNewPlaylist = function(req,res){
   var artist1 = decodeURI(req.query.artist1);
@@ -257,7 +275,7 @@ var makeNewPlaylist = function(req,res){
           }
           else{
             req.user.update({playlists:req.user.playlists.push(playlist)},function(err){})
-            res.redirect('/playlist/'+playlist._id)
+            res.redirect('/results/playlist/'+playlist._id)
           }
         })
 
