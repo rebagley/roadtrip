@@ -192,6 +192,7 @@ router.post('/', function(req,res){
   console.log(req.body.artist1)
   console.log(req.body.artist2)
   res.redirect('/search?artist1='+encodeURIComponent(req.body.artist1)+'&artist2='+encodeURIComponent(req.body.artist2))
+  console.log(id)
 })
 
 
