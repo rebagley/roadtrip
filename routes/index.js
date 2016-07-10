@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user')
+var Playlist = require('..')
 
 /* GET home page. */
 router.use(function(req,res,next){
@@ -26,11 +27,11 @@ router.get('/myAccount',function(req,res,next){
 })
 
 router.get('/friends',function(req,res,next){
-  res.render('friends',req.user)
+  res.render('friends',{user:req.user})
 })
 
 router.get('/myPlaylists',function(req,res,next){
-  res.render('myPlaylists',req.user);
+  res.render('playlists',{playlists:req.user.playlists});
 })
 
 
