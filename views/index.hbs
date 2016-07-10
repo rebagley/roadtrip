@@ -1,4 +1,6 @@
+<p style="text-align: center">
 <img class="shittyLogo" src="/images/roadtriplogo.gif" style="width: 150%; min-width: 250px"/>
+</p>
 <div class="container" id="bodyContainer">
   <div class="heading">Create the perfect playlist for a roadtrip with friends.</div>
   <div class="container-fluid">
@@ -40,5 +42,24 @@
   <!-- <form method="post" action='/'> -->
   <button class="button-search" id="findMatches">Search</button>
   </form>
+</div>
+</div>
+<!-- ARTISTS RESULTS -->
+<div class="container-top20">
+  <div class="top20">Artists Results</div>
+{{#each artist}}
+<div class="user-badge">
+  <div class="user-badge-avatar">
+    <img src="{{picture}}"/>
+  </div>
+  <div class="heading">
+    <ul>
+      <li>{{name}}</li>
+    </ul>
+  </div>
+  </table>
+  <a type="button-cool-search" href="{{url}}">See more about artist</a>
+</div>
+{{/each}}
 </div>
 </div>

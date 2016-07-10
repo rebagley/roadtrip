@@ -58,17 +58,18 @@ body {
 }
 
 .shittyLogo {
-  position: absolute;
-  top: 25%;
+  position: relative;
+  /*top: 29%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 10px
+  transform: translate(-50%, -50%);*/
+  margin: 10px;
+  left: -25%;
 }
 #bodyContainer {
-  position: absolute;
-  top: 55%;
+  position: relative;
+  /*top: 55%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);*/
   background: #3c405c;
   height: 40vh;
 }
@@ -695,12 +696,16 @@ html {
 	content: "\e603";
 }
 
-.container-track{
+.container-track, .container-top20{
   position: relative;
-  top: 16em;
+  /*top: 1em;*/
   text-align: center;
   width: 75%;
   vertical-align: bottom;
   margin: 0 auto;
-  /* line-height: 406px;
+  /* line-height: 406px;*/
+}
+
+.container-top20{
+  top:5em;
 }
