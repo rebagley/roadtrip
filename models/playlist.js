@@ -1,6 +1,11 @@
 var mongoose = require('mongoose')
 //var findOrCreate = require('mongoose-findorcreate')
 
+var songSchema=mongoose.Schema({
+	name:String,
+	artist:String,
+	album: String
+})
 
 var playlistSchema = mongoose.Schema({
 	name:String
@@ -9,9 +14,17 @@ var playlistSchema = mongoose.Schema({
 		ref: 'User'
 	},
 	dateCreated: Date,
-	followers:Array
+	followers:[{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
+	}],
+	spotifyId:String,
+	songs:Array
 })
 
 
 
-module.exports = mongoose.model('Playlist',playlistSchema)
+module.exports ={
+	Playlist:mongoose.model('Playlist',playlistSchema),
+	Song:mongoose.model('Song',songSchema)
+}

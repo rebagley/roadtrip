@@ -9,4 +9,14 @@
   <tbody>
     {{#each playlists}}
       <tr>
-        <td>{{name}}</td>
+        <td>
+          <a href="playlist/{{spotifyId}}">
+            {{name}}
+          </a>
+        </td>
+        <td>{{creator}}</td>
+        <td>{{dateCreate}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

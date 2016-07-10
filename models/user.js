@@ -10,7 +10,8 @@ var userSchema = mongoose.Schema({
   spotifyId: String,
   playlists:Array,
 	wantsSpotify:Boolean,
-	friends:Array
+	friends:Array,
+	spotifyToken:String
 })
 
 
